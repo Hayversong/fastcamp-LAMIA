@@ -3,6 +3,7 @@ import AddTask from "./components/AddTask";
 import Tasks from "./components/Tasks";
 
 function App() {
+  //quando eu altero um state, eu altero a interface
   const[tasks, setTasks] = useState([
     {
     id: 1,
@@ -22,6 +23,25 @@ function App() {
   },
 ]);
 
+function onTaskClick(taskId) {
+  const newTasks = tasks.map((task) => {
+    //se o id da tarefa for igual ao id da tarefa clicada, eu altero o estado da tarefa para o contrário do que ele é atualmente
+    if (task.id === taskId) {
+      return { ...task, isCompleted: !task.isCompleted };
+    } else {
+      return task;
+    }
+    return task;
+  });
+  setTasks(newTasks);  
+}
+
+function onTaskDelete(taskId) {
+  //Deletar tarefas da lista
+  const newTasks = tasks.filter(task => task.id != taskId);
+  setTasks(newTasks);
+}
+
   return (
     <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
       <div className="w-[500px]">
@@ -29,7 +49,10 @@ function App() {
           Gerenciador de tarefas
         </h1>
         <AddTask />
-        <Tasks tasks={tasks} />
+        <Tasks 
+          tasks={tasks} 
+          onTaskClick={onTaskClick} 
+          onTaskDelete={onTaskDelete} />
       </div>
     </div>
   );
