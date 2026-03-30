@@ -31,6 +31,7 @@ function onTaskClick(taskId) {
     } else {
       return task;
     }
+    return task;
   });
   setTasks(newTasks);  
 }
@@ -45,10 +46,10 @@ function onTaskAdd(title, description) {
   //Adicionar tarefas na lista
   const newTask = {
     id: tasks.length,
-    title,
-    description,
-    isCompleted: false,
-  };
+    title: title,
+    description: description,
+    isCompleted: false
+  }
   setTasks([...tasks, newTask]);
 }
   return (
@@ -57,7 +58,7 @@ function onTaskAdd(title, description) {
         <h1 className="text-3xl text-slate-100 font-bold text-center">
           Gerenciador de tarefas
         </h1>
-        <AddTask onTaskAdd = {onTaskAdd} />
+        <AddTask onTaskAdd={onTaskAdd} />
         <Tasks 
           tasks={tasks} 
           onTaskClick={onTaskClick} 
