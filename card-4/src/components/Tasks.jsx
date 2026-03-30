@@ -1,7 +1,16 @@
-import { ChevronRightIcon, DeleteIcon, TrashIcon } from "lucide-react";
+import { ChevronRightIcon, TrashIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function Tasks(props) {
-  console.log(props);
+  const navigate = useNavigate();
+
+  function onSeeDetails(task) {
+    //uma boa prática para se usar em react é criar uma query string para passar os dados para outra página, ao invés de usar o state do react-router, pois isso permite que a página seja recarregada sem perder os dados. Além disso, é mais fácil de debugar e compartilhar a URL com os dados.
+    const query = new URLSearchParams;
+    query.set("title", task.title);
+    query.set("description", task.description);
+    navigate(`/task?${query.toString()}`);
+  }
   return (
     <ul className="space-y-4 p-6 bg-slate-200 rounded-md shadow">
       {props.tasks.map((task) => (
@@ -13,10 +22,10 @@ function Tasks(props) {
             }>
                 {task.title}
           </button>
-          <button className=" bg-slate-400 p-2 rounded-md text-white">
+          <button onClick={() => onSeeDetails(task)} className=" bg-slate-400 p-2 rounded-md text-white">
             <ChevronRightIcon />
           </button>
-           <button onClick={() => props.onTaskDelete(task.id)} className=" bg-slate-400 p-2 rounded-md text-white">
+          <button onClick={() => props.onTaskDelete(task.id)} className=" bg-slate-400 p-2 rounded-md text-white">
             <TrashIcon />
           </button>
         </li>

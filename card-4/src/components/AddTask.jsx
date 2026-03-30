@@ -17,13 +17,18 @@ function AddTask({onTaskAdd}){
                 placeholder="Descrição da tarefa" 
                 className="border border-slate-400 outline-slate-400 px-4 py-2 rounded-md" 
                 value={description}
-                onChange={(event) => setTitle(event.target.value)}
+                onChange={(event) => setDescription(event.target.value)}
             />
-            <button className="bg-slate-500 text-white px-4 py-2 rounded-md font-medium" onClick={() => {
+            <button onClick={() => {
+                //verificar se o título e a descrição não estão vazios
+                if (title.trim() === "" || description.trim() === "") {
+                    alert("Por favor, preencha o título e a descrição da tarefa.");
+                    return;
+                }
                 onTaskAdd(title, description);
                 setTitle("");
                 setDescription("");
-            }}>adicionar</button>
+            }} className="bg-slate-500 text-white px-4 py-2 rounded-md font-medium">adicionar</button>
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AddTask from "./components/AddTask";
 import Tasks from "./components/Tasks";
+import {v4} from "uuid";
 
 function App() {
   //quando eu altero um state, eu altero a interface
@@ -28,8 +29,6 @@ function onTaskClick(taskId) {
     //se o id da tarefa for igual ao id da tarefa clicada, eu altero o estado da tarefa para o contrário do que ele é atualmente
     if (task.id === taskId) {
       return { ...task, isCompleted: !task.isCompleted };
-    } else {
-      return task;
     }
     return task;
   });
@@ -45,7 +44,7 @@ function onTaskDelete(taskId) {
 function onTaskAdd(title, description) {
   //Adicionar tarefas na lista
   const newTask = {
-    id: tasks.length,
+    id: v4(),
     title: title,
     description: description,
     isCompleted: false
