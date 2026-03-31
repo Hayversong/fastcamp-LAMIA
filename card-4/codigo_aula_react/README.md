@@ -1,8 +1,19 @@
-# React + Vite
+# Card 4 - Fastcamp LAMIA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto faz parte do desafio **Card 4** do programa de treinamento Fastcamp, desenvolvido no **LAMIA** (Laboratório de Aprendizado de Máquina e Inteligência Aplicada). O foco deste card é consolidar conhecimentos em desenvolvimento Front-end moderno.
 
-Currently, two official plugins are available:
+## Tecnologias Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+O projeto foi construído utilizando as seguintes ferramentas:
+
+* **React**: Biblioteca principal para construção da interface.
+* **Vite**: Tooling para um ambiente de desenvolvimento rápido.
+* **Tailwind CSS**: Framework CSS utilitário para estilização responsiva.
+* **JavaScript/TypeScript**: Lógica de programação.
+
+## Funcionalidades
+
+- [X] Interface responsiva adaptada para diferentes dispositivos.
+- [X] Componentização de elementos reutilizáveis.
+- [X] Integração com API (se aplicável).
+- [X] Gerenciamento de estado.
