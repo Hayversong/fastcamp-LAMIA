@@ -6,7 +6,7 @@ import Link from "next/link";
  * Componente Header com navegação principal da aplicação
  * Componente responsável apenas pela UI de navegação
  */
-export default function Header() {
+export default function Header(): JSX.Element {
   return (
     <header className="bg-gray-800 shadow-lg">
       <nav className="max-w-6xl mx-auto px-4 py-6">

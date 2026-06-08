@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import GameCard from "@/components/GameCard";
 import EmptyState from "@/components/EmptyState";
+import type { SavedGame } from "@/types";
 
 /**
  * Página inicial - Lista todos os jogos salvos
  * Boa prática: Usar 'use client' para componentes que precisam de interatividade
  */
-export default function Home() {
+const Home: FC = () => {
   // Estados para gerenciar lista de jogos e carregamento
-  const [games, setGames] = useState([]);
+  const [games, setGames] = useState<SavedGame[]>([]);
   const [mounted, setMounted] = useState(false);
 
   /**
@@ -34,7 +35,7 @@ export default function Home() {
    * Remove um jogo da lista
    * Boa prática: Atualizar estado imutavelmente
    */
-  const handleDeleteGame = (id) => {
+  const handleDeleteGame = (id: number): void => {
     const updatedGames = games.filter((game) => game.id !== id);
     setGames(updatedGames);
     localStorage.setItem("gamesReview", JSON.stringify(updatedGames));
@@ -44,7 +45,11 @@ export default function Home() {
    * Atualiza a avaliação de um jogo
    * Boa prática: Manter consistência entre estado e persistência
    */
-  const handleUpdateRating = (id, newRating, newComment) => {
+  const handleUpdateRating = (
+    id: number,
+    newRating: number,
+    newComment: string,
+  ): void => {
     const updatedGames = games.map((game) =>
       game.id === id
         ? { ...game, rating: newRating, comment: newComment }
@@ -80,4 +85,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Home;

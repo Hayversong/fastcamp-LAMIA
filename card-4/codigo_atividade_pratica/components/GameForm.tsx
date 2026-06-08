@@ -1,25 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FC, ChangeEvent, FormEvent } from "react";
 import { searchGame } from "@/services/gamesApi";
 import {
   validateData,
   GameFormInputSchema,
   SearchedGameSchema,
 } from "@/lib/validation";
+import type { SearchedGame, GameData, GameFormProps } from "@/types";
 
 /**
  * Formulário para adicionar um novo jogo
- * @param {Function} onSubmit - Callback quando o formulário é enviado
- * @param {boolean} isLoading - Indica se está carregando
  * Componentes reutilizáveis recebem callbacks do pai para ações
  */
-export default function GameForm({ onSubmit, isLoading }) {
+const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
   // Estados para controlar os inputs do formulário
   const [gameName, setGameName] = useState("");
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState<number>(5);
   const [comment, setComment] = useState("");
-  const [searchedGame, setSearchedGame] = useState(null);
+  const [searchedGame, setSearchedGame] = useState<SearchedGame | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState("");
 
@@ -27,7 +26,7 @@ export default function GameForm({ onSubmit, isLoading }) {
    * Busca o jogo na API RAWG
    * Valida inputs antes de fazer requisições
    */
-  const handleSearch = async () => {
+  const handleSearch = async (): Promise<void> => {
     if (!gameName.trim()) {
       setError("Digite o nome do jogo");
       return;
@@ -41,10 +40,10 @@ export default function GameForm({ onSubmit, isLoading }) {
 
       if (gameData) {
         const gameValidation = validateData(gameData, SearchedGameSchema);
-        if (gameValidation.success) {
+        if (gameValidation.success && gameValidation.data) {
           setSearchedGame(gameValidation.data);
         } else {
-          setError(gameValidation.error);
+          setError(gameValidation.error || "Erro ao validar dados");
           setSearchedGame(null);
         }
       } else {
@@ -64,7 +63,7 @@ export default function GameForm({ onSubmit, isLoading }) {
    * Envia o formulário com os dados do jogo
    * Valida que o jogo foi encontrado antes de enviar
    */
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
     if (!searchedGame) {
@@ -74,23 +73,41 @@ export default function GameForm({ onSubmit, isLoading }) {
 
     // Validar inputs do formulário
     const inputValidation = validateData(
-      { gameName: searchedGame.name, rating: parseInt(rating), comment },
+      {
+        gameName: searchedGame.name,
+        rating: parseInt(String(rating), 10),
+        comment,
+      },
       GameFormInputSchema,
     );
     if (!inputValidation.success) {
-      setError(inputValidation.error);
+      setError(inputValidation.error || "Erro ao validar dados");
       return;
     }
 
-    const formData = {
+    const formData: GameData = {
       name: searchedGame.name,
       image: searchedGame.image,
       released: searchedGame.released,
-      rating: parseInt(rating),
+      rating: parseInt(String(rating), 10),
       comment: comment.trim(),
     };
 
     onSubmit(formData);
+  };
+
+  const handleGameNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setGameName(e.target.value);
+    setSearchedGame(null);
+    setError("");
+  };
+
+  const handleRatingChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setRating(e.target.value as unknown as number);
+  };
+
+  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
+    setComment(e.target.value);
   };
 
   return (
@@ -111,11 +128,7 @@ export default function GameForm({ onSubmit, isLoading }) {
             id="gameName"
             type="text"
             value={gameName}
-            onChange={(e) => {
-              setGameName(e.target.value);
-              setSearchedGame(null);
-              setError("");
-            }}
+            onChange={handleGameNameChange}
             placeholder="Ex: The Legend of Zelda: Breath of the Wild"
             className="flex-1 bg-gray-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={isSearching}
@@ -173,7 +186,7 @@ export default function GameForm({ onSubmit, isLoading }) {
           min="0"
           max="10"
           value={rating}
-          onChange={(e) => setRating(e.target.value)}
+          onChange={handleRatingChange}
           className="w-full bg-gray-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -186,10 +199,10 @@ export default function GameForm({ onSubmit, isLoading }) {
         <textarea
           id="comment"
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          onChange={handleCommentChange}
           placeholder="O que você achou do jogo?"
           className="w-full bg-gray-700 text-white rounded px-4 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
-          rows="4"
+          rows={4}
         />
       </div>
 
@@ -203,4 +216,6 @@ export default function GameForm({ onSubmit, isLoading }) {
       </button>
     </form>
   );
-}
+};
+
+export default GameForm;

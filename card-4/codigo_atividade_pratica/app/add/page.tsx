@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FC } from "react";
 import { useRouter } from "next/navigation";
 import GameForm from "@/components/GameForm";
 import { addGame } from "@/services/gamesApi";
+import type { GameData } from "@/types";
 
-export default function AddGamePage() {
+const AddGamePage: FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleAddGame = async (formData) => {
+  const handleAddGame = async (formData: GameData): Promise<void> => {
     setIsLoading(true);
     try {
       addGame(formData);
@@ -28,4 +29,6 @@ export default function AddGamePage() {
       <GameForm onSubmit={handleAddGame} isLoading={isLoading} />
     </div>
   );
-}
+};
+
+export default AddGamePage;

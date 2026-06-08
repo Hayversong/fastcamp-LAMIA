@@ -1,12 +1,17 @@
 import "./globals.css";
 import Header from "@/components/Header";
+import { ReactNode } from "react";
 
 export const metadata = {
   title: "★ Games Review",
   description: "Aplicação para reviews de jogos que você já jogou",
 };
 
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang="pt-BR">
       <body className="bg-gray-900 text-white">

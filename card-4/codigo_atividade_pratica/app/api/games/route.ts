@@ -1,8 +1,17 @@
 // Rota API para buscar jogos na RAWG
 // Evita problemas de CORS fazendo a requisição no servidor
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { NextRequest } from "next/server";
+import type { SearchedGame } from "@/types";
 
-export async function GET(request) {
+interface RawgGame {
+  name: string;
+  background_image: string | null;
+  released: string | null;
+  rating: number | null;
+}
+
+export async function GET(request: NextRequest): Promise<Response> {
   try {
     const { searchParams } = new URL(request.url);
     const gameName = searchParams.get("search");
@@ -27,7 +36,7 @@ export async function GET(request) {
     const url = `${BASE_URL}/games?key=${API_KEY}&search=${gameName}&page_size=1`;
     console.log("Fazendo requisição para RAWG:", url);
 
-    const response = await axios.get(url, {
+    const response = await axios.get<{ results: RawgGame[] }>(url, {
       headers: {
         "User-Agent": "NextJS-App/1.0",
       },
@@ -40,19 +49,27 @@ export async function GET(request) {
 
     if (data.results && data.results.length > 0) {
       const game = data.results[0];
-      return Response.json({
+      const searchedGame: SearchedGame = {
         name: game.name,
         image: game.background_image,
         released: game.released,
         rating: game.rating,
-      });
+      };
+      return Response.json(searchedGame);
     }
 
     return Response.json(null);
   } catch (error) {
-    console.error("Erro na rota API:", error.message);
+    const errorMessage =
+      error instanceof AxiosError
+        ? error.message
+        : error instanceof Error
+          ? error.message
+          : "Erro desconhecido";
+
+    console.error("Erro na rota API:", errorMessage);
     return Response.json(
-      { error: "Erro ao buscar jogo: " + error.message },
+      { error: `Erro ao buscar jogo: ${errorMessage}` },
       { status: 500 },
     );
   }
