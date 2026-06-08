@@ -2,6 +2,8 @@
  * Componente exibido quando não há jogos salvos
  * Componentes sem estado podem ser funções simples
  */
+import Link from "next/link";
+
 export default function EmptyState() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh]">
@@ -10,12 +12,12 @@ export default function EmptyState() {
       <p className="text-gray-400 mb-8">
         Comece a adicionar seus jogos favoritos!
       </p>
-      <a
+      <Link
         href="/add"
         className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition text-lg"
       >
         Adicionar Primeiro Jogo
-      </a>
+      </Link>
     </div>
   );
 }

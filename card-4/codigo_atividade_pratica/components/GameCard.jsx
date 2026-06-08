@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 /**
  * Card para exibir informações de um jogo
@@ -38,11 +39,14 @@ export default function GameCard({ game, onDelete, onUpdateRating }) {
   return (
     <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
       {/* Imagem do Jogo */}
-      <div className="relative h-64 bg-gray-700 overflow-hidden">
-        <img
+      <div className="relative w-full h-64 bg-gray-700 overflow-hidden">
+        <Image
           src={imageSrc}
           alt={game.name}
-          className="w-full h-full object-cover"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover"
+          priority={false}
           onError={() =>
             setImageSrc("https://via.placeholder.com/300x400?text=Sem+Capa")
           }

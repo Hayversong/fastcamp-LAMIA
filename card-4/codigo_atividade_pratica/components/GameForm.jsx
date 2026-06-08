@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { searchGame } from "@/services/gamesApi";
+import {
+  validateData,
+  GameFormInputSchema,
+  SearchedGameSchema,
+} from "@/lib/validation";
 
 /**
  * Formulário para adicionar um novo jogo
@@ -35,19 +40,21 @@ export default function GameForm({ onSubmit, isLoading }) {
       const gameData = await searchGame(gameName);
 
       if (gameData) {
-        setSearchedGame(gameData);
+        const gameValidation = validateData(gameData, SearchedGameSchema);
+        if (gameValidation.success) {
+          setSearchedGame(gameValidation.data);
+        } else {
+          setError(gameValidation.error);
+          setSearchedGame(null);
+        }
       } else {
-        setError("Jogo não encontrado. Você pode continuar mesmo assim.");
-        setSearchedGame({
-          name: gameName,
-          image: null,
-          released: null,
-          rating: null,
-        });
+        setError("Jogo não encontrado na API RAWG. Tente outro nome.");
+        setSearchedGame(null);
       }
     } catch (err) {
       console.error("Erro ao buscar jogo:", err);
       setError("Erro ao buscar jogo. Tente novamente.");
+      setSearchedGame(null);
     } finally {
       setIsSearching(false);
     }
@@ -55,20 +62,30 @@ export default function GameForm({ onSubmit, isLoading }) {
 
   /**
    * Envia o formulário com os dados do jogo
-   * Limpa o estado e valida dados antes de enviar
+   * Valida que o jogo foi encontrado antes de enviar
    */
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!gameName.trim()) {
-      setError("Preencha o nome do jogo");
+    if (!searchedGame) {
+      setError("Busque e confirme o jogo primeiro");
+      return;
+    }
+
+    // Validar inputs do formulário
+    const inputValidation = validateData(
+      { gameName: searchedGame.name, rating: parseInt(rating), comment },
+      GameFormInputSchema,
+    );
+    if (!inputValidation.success) {
+      setError(inputValidation.error);
       return;
     }
 
     const formData = {
-      name: searchedGame?.name || gameName,
-      image: searchedGame?.image || null,
-      released: searchedGame?.released || null,
+      name: searchedGame.name,
+      image: searchedGame.image,
+      released: searchedGame.released,
       rating: parseInt(rating),
       comment: comment.trim(),
     };

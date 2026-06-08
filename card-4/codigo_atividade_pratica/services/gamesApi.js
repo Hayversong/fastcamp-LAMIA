@@ -1,39 +1,71 @@
-// Serviço para consumir a API RAWG (https://rawg.io/apidocs)
-const API_KEY = process.env.NEXT_PUBLIC_RAWG_API_KEY || "dummy_key";
-const BASE_URL = "https://api.rawg.io/api";
+// Serviço para buscar e gerenciar jogos
 
 /**
- * Busca jogos na API RAWG com base no nome
+ * Busca jogos na API RAWG através da rota API do Next.js
+ * Utiliza localStorage para cache local de buscas já realizadas
  * @param {string} gameName - Nome do jogo a buscar
  * @returns {Promise<Object>} Objeto com dados do jogo (nome, capa, etc)
- * Boa prática: Funções de API isoladas e reutilizáveis
  */
 export async function searchGame(gameName) {
   try {
+    // Verifica se está no navegador e se o jogo já foi buscado
+    if (typeof window !== "undefined") {
+      const cachedGames = localStorage.getItem("gamesCache");
+      if (cachedGames) {
+        const gamesCache = JSON.parse(cachedGames);
+        if (gamesCache[gameName]) {
+          return gamesCache[gameName];
+        }
+      }
+    }
+
+    // Chama a rota API Next.js em vez de chamar a API RAWG diretamente
     const response = await fetch(
-      `${BASE_URL}/games?key=${API_KEY}&search=${gameName}&page_size=1`,
-      { next: { revalidate: 3600 } }, // Cache por 1 hora
+      `/api/games?search=${encodeURIComponent(gameName)}`,
     );
 
     if (!response.ok) {
-      throw new Error("Erro ao buscar jogo na API");
+      throw new Error(`Erro ao buscar jogo: ${response.status}`);
     }
 
-    const data = await response.json();
+    const gameData = await response.json();
 
-    if (data.results && data.results.length > 0) {
-      const game = data.results[0];
-      return {
-        name: game.name,
-        image: game.background_image,
-        released: game.released,
-        rating: game.rating,
-      };
+    if (gameData && typeof window !== "undefined") {
+      // Salva no cache local
+      const cachedGames = localStorage.getItem("gamesCache") || "{}";
+      const gamesCache = JSON.parse(cachedGames);
+      gamesCache[gameName] = gameData;
+      localStorage.setItem("gamesCache", JSON.stringify(gamesCache));
     }
 
-    return null;
+    return gameData;
   } catch (error) {
-    console.error("Erro ao consumir API RAWG:", error);
+    console.error("Erro ao buscar jogo:", error);
     return null;
   }
+}
+
+/**
+ * Adiciona um novo jogo ao localStorage
+ * @param {Object} formData - Dados do jogo (name, rating, comment, etc)
+ * @returns {Object} Jogo adicionado com id e createdAt
+ */
+export function addGame(formData) {
+  if (typeof window === "undefined") {
+    throw new Error("addGame deve ser chamado no navegador");
+  }
+
+  const savedGames = localStorage.getItem("gamesReview") || "[]";
+  const games = JSON.parse(savedGames);
+
+  const newGame = {
+    ...formData,
+    id: Date.now(),
+    createdAt: new Date().toISOString(),
+  };
+
+  games.push(newGame);
+  localStorage.setItem("gamesReview", JSON.stringify(games));
+
+  return newGame;
 }
