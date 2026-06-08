@@ -2,6 +2,7 @@
 
 import { useState, FC } from "react";
 import Image from "next/image";
+import { validateData, GameFormInputSchema } from "@/lib/validation";
 import type { GameCardProps } from "@/types";
 
 /**
@@ -12,15 +13,33 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [tempRating, setTempRating] = useState(game.rating);
   const [tempComment, setTempComment] = useState(game.comment);
+  const [error, setError] = useState("");
   const [imageSrc, setImageSrc] = useState(
     game.image || "https://via.placeholder.com/300x400?text=Sem+Capa",
   );
 
   /**
    * Salva as alterações de avaliação e comentário
+   * Valida dados antes de atualizar
    * Atualiza do pai via callback em vez de estado local
    */
   const handleSave = (): void => {
+    // Validar dados antes de salvar
+    const validation = validateData(
+      {
+        gameName: game.name,
+        rating: tempRating,
+        comment: tempComment,
+      },
+      GameFormInputSchema,
+    );
+
+    if (!validation.success) {
+      setError(validation.error || "Erro ao validar dados");
+      return;
+    }
+
+    setError("");
     onUpdateRating(game.id, tempRating, tempComment);
     setIsEditing(false);
   };
@@ -120,6 +139,11 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
         ) : (
           <>
             {/* Modo de Edição */}
+            {error && (
+              <div className="mb-4 p-3 bg-red-600 text-white rounded">
+                {error}
+              </div>
+            )}
             <div className="mb-4">
               <label className="block text-gray-300 text-sm font-bold mb-2">
                 Nota (0-10):

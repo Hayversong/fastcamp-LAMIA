@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, FC } from "react";
+import { validateData, GameFormInputSchema } from "@/lib/validation";
 import GameCard from "@/components/GameCard";
 import EmptyState from "@/components/EmptyState";
 import type { SavedGame } from "@/types";
@@ -43,6 +44,7 @@ const Home: FC = () => {
 
   /**
    * Atualiza a avaliação de um jogo
+   * Valida dados antes de atualizar
    * Boa prática: Manter consistência entre estado e persistência
    */
   const handleUpdateRating = (
@@ -50,10 +52,30 @@ const Home: FC = () => {
     newRating: number,
     newComment: string,
   ): void => {
-    const updatedGames = games.map((game) =>
-      game.id === id
-        ? { ...game, rating: newRating, comment: newComment }
-        : game,
+    const game = games.find((g) => g.id === id);
+    if (!game) {
+      console.error("Jogo não encontrado");
+      return;
+    }
+
+    // Validar dados antes de salvar
+    const validation = validateData(
+      {
+        gameName: game.name,
+        rating: newRating,
+        comment: newComment,
+      },
+      GameFormInputSchema,
+    );
+
+    if (!validation.success) {
+      console.error("Erro ao validar dados:", validation.error);
+      alert(validation.error || "Erro ao validar dados");
+      return;
+    }
+
+    const updatedGames = games.map((g) =>
+      g.id === id ? { ...g, rating: newRating, comment: newComment } : g,
     );
     setGames(updatedGames);
     localStorage.setItem("gamesReview", JSON.stringify(updatedGames));
