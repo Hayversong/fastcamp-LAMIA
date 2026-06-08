@@ -1,4 +1,11 @@
 import { z } from "zod";
+import type {
+  SearchedGame,
+  GameFormInput,
+  GameData,
+  SavedGame,
+  ValidationResult,
+} from "@/types";
 
 /**
  * Schema para dados de um jogo encontrado na API RAWG
@@ -40,11 +47,14 @@ export const SavedGameSchema = GameDataSchema.extend({
 
 /**
  * Valida dados e retorna erros amigáveis
- * @param {*} data - Dados a validar
- * @param {z.ZodSchema} schema - Schema Zod para validação
- * @returns {{success: boolean, error?: string, data?: *}}
+ * @param data - Dados a validar
+ * @param schema - Schema Zod para validação
+ * @returns Resultado da validação com dados tipados
  */
-export function validateData(data, schema) {
+export function validateData<T>(
+  data: unknown,
+  schema: z.ZodSchema<T>,
+): ValidationResult<T> {
   try {
     const validated = schema.parse(data);
     return { success: true, data: validated };

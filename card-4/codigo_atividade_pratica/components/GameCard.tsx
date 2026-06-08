@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FC } from "react";
 import Image from "next/image";
+import type { GameCardProps } from "@/types";
 
 /**
  * Card para exibir informações de um jogo
- * @param {Object} game - Dados do jogo
- * @param {Function} onDelete - Callback para deletar jogo
- * @param {Function} onUpdateRating - Callback para atualizar avaliação
  */
-export default function GameCard({ game, onDelete, onUpdateRating }) {
+const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
   // Estados locais para gerenciar edição e dados temporários do card
   const [isEditing, setIsEditing] = useState(false);
   const [tempRating, setTempRating] = useState(game.rating);
@@ -22,7 +20,7 @@ export default function GameCard({ game, onDelete, onUpdateRating }) {
    * Salva as alterações de avaliação e comentário
    * Atualiza do pai via callback em vez de estado local
    */
-  const handleSave = () => {
+  const handleSave = (): void => {
     onUpdateRating(game.id, tempRating, tempComment);
     setIsEditing(false);
   };
@@ -30,10 +28,25 @@ export default function GameCard({ game, onDelete, onUpdateRating }) {
   /**
    * Cancela edição e restaura valores originais
    */
-  const handleCancel = () => {
+  const handleCancel = (): void => {
     setTempRating(game.rating);
     setTempComment(game.comment);
     setIsEditing(false);
+  };
+
+  const handleImageError = (): void => {
+    setImageSrc("https://via.placeholder.com/300x400?text=Sem+Capa");
+  };
+
+  const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const value = parseInt(e.target.value, 10) || 0;
+    setTempRating(Math.max(0, Math.min(10, value)));
+  };
+
+  const handleCommentChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ): void => {
+    setTempComment(e.target.value);
   };
 
   return (
@@ -47,9 +60,7 @@ export default function GameCard({ game, onDelete, onUpdateRating }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover"
           priority={false}
-          onError={() =>
-            setImageSrc("https://via.placeholder.com/300x400?text=Sem+Capa")
-          }
+          onError={handleImageError}
         />
       </div>
 
@@ -118,9 +129,7 @@ export default function GameCard({ game, onDelete, onUpdateRating }) {
                 min="0"
                 max="10"
                 value={tempRating}
-                onChange={(e) =>
-                  setTempRating(Math.max(0, Math.min(10, e.target.value)))
-                }
+                onChange={handleRatingChange}
                 className="w-full bg-gray-700 text-white rounded px-3 py-2 mb-3"
               />
 
@@ -129,10 +138,10 @@ export default function GameCard({ game, onDelete, onUpdateRating }) {
               </label>
               <textarea
                 value={tempComment}
-                onChange={(e) => setTempComment(e.target.value)}
+                onChange={handleCommentChange}
                 placeholder="Adicione um comentário..."
                 className="w-full bg-gray-700 text-white rounded px-3 py-2 resize-none"
-                rows="3"
+                rows={3}
               />
             </div>
 
@@ -156,4 +165,6 @@ export default function GameCard({ game, onDelete, onUpdateRating }) {
       </div>
     </div>
   );
-}
+};
+
+export default GameCard;
