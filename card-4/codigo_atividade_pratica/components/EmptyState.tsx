@@ -3,8 +3,9 @@
  * Componentes sem estado podem ser funções simples
  */
 import Link from "next/link";
+import type { ReactNode } from "react";
 
-export default function EmptyState(): JSX.Element {
+export default function EmptyState(): ReactNode {
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh]">
       <div className="text-8xl mb-4">★</div>

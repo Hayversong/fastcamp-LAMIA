@@ -1,6 +1,5 @@
 // Rota API para buscar jogos na RAWG
 // Evita problemas de CORS fazendo a requisição no servidor
-import axios, { AxiosError } from "axios";
 import { NextRequest } from "next/server";
 import type { SearchedGame } from "@/types";
 
@@ -24,28 +23,34 @@ export async function GET(request: NextRequest): Promise<Response> {
     }
 
     const API_KEY = process.env.RAWG_API_KEY;
-    const BASE_URL = process.env.RAWG_BASE_URL || "https://api.rawg.io/api";
+    const BASE_URL = process.env.RAWG_BASE_URL;
 
-    if (!API_KEY) {
+    if (!API_KEY || !BASE_URL) {
       return Response.json(
-        { error: "API_KEY não configurada" },
+        {
+          error:
+            "Variáveis de ambiente RAWG_API_KEY e RAWG_BASE_URL não configuradas",
+        },
         { status: 500 },
       );
     }
 
     const url = `${BASE_URL}/games?key=${API_KEY}&search=${gameName}&page_size=1`;
-    console.log("Fazendo requisição para RAWG:", url);
 
-    const response = await axios.get<{ results: RawgGame[] }>(url, {
+    const response = await fetch(url, {
       headers: {
         "User-Agent": "NextJS-App/1.0",
       },
     });
 
-    console.log("Resposta da RAWG:", response.status);
+    if (!response.ok) {
+      return Response.json(
+        { error: `Erro ao consultar RAWG: ${response.status}` },
+        { status: 502 },
+      );
+    }
 
-    const data = response.data;
-    console.log("Dados recebidos da RAWG:", data);
+    const data: { results: RawgGame[] } = await response.json();
 
     if (data.results && data.results.length > 0) {
       const game = data.results[0];
@@ -61,11 +66,7 @@ export async function GET(request: NextRequest): Promise<Response> {
     return Response.json(null);
   } catch (error) {
     const errorMessage =
-      error instanceof AxiosError
-        ? error.message
-        : error instanceof Error
-          ? error.message
-          : "Erro desconhecido";
+      error instanceof Error ? error.message : "Erro desconhecido";
 
     console.error("Erro na rota API:", errorMessage);
     return Response.json(

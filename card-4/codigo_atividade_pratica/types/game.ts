@@ -2,34 +2,9 @@
  * Tipos relacionados a Jogos
  */
 
-/**
- * Dados de um jogo retornado pela API RAWG
- */
-export interface SearchedGame {
-  name: string;
-  image: string | null;
-  released: string | null;
-  rating: number | null;
-}
+import type { GameData, SavedGame, SearchedGame } from "@/lib/validation";
 
-/**
- * Dados completos de um jogo a ser salvo
- */
-export interface GameData {
-  name: string;
-  image: string | null;
-  released: string | null;
-  rating: number;
-  comment: string;
-}
-
-/**
- * Dados de um jogo salvo (com metadados)
- */
-export interface SavedGame extends GameData {
-  id: number;
-  createdAt: string;
-}
+export type { GameData, SavedGame, SearchedGame };
 
 /**
  * Propriedades do componente GameCard

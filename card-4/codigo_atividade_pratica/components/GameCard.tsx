@@ -2,7 +2,8 @@
 
 import { useState, FC } from "react";
 import Image from "next/image";
-import { validateData, GameFormInputSchema } from "@/lib/validation";
+import { useValidation } from "@/hooks";
+import { GameFormInputSchema } from "@/lib/validation";
 import type { GameCardProps } from "@/types";
 
 /**
@@ -18,6 +19,9 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
     game.image || "https://via.placeholder.com/300x400?text=Sem+Capa",
   );
 
+  // Custom hook para validação
+  const { validate } = useValidation();
+
   /**
    * Salva as alterações de avaliação e comentário
    * Valida dados antes de atualizar
@@ -25,7 +29,7 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
    */
   const handleSave = (): void => {
     // Validar dados antes de salvar
-    const validation = validateData(
+    const validation = validate(
       {
         gameName: game.name,
         rating: tempRating,

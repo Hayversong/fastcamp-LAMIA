@@ -2,16 +2,9 @@
  * Tipos relacionados a Formulários
  */
 
-import type { GameData } from "./game";
+import type { GameData, GameFormInput } from "@/lib/validation";
 
-/**
- * Dados do formulário de entrada
- */
-export interface GameFormInput {
-  gameName: string;
-  rating: number;
-  comment: string;
-}
+export type { GameFormInput };
 
 /**
  * Propriedades do componente GameForm

@@ -1,89 +1,25 @@
 "use client";
 
-import { useState, useEffect, FC } from "react";
-import { validateData, GameFormInputSchema } from "@/lib/validation";
+import { FC, useState } from "react";
+import { useFuzzySearch, useGames } from "@/hooks";
 import GameCard from "@/components/GameCard";
 import EmptyState from "@/components/EmptyState";
-import type { SavedGame } from "@/types";
+import LoadingState from "@/components/LoadingState";
 
 /**
  * Página inicial - Lista todos os jogos salvos
  * Boa prática: Usar 'use client' para componentes que precisam de interatividade
  */
 const Home: FC = () => {
-  // Estados para gerenciar lista de jogos e carregamento
-  const [games, setGames] = useState<SavedGame[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  /**
-   * Carrega os jogos do localStorage ao montar o componente
-   * Boa prática: useEffect para efeitos colaterais (I/O, storage)
-   */
-  useEffect(() => {
-    try {
-      const savedGames = localStorage.getItem("gamesReview");
-      if (savedGames) {
-        setGames(JSON.parse(savedGames));
-      }
-    } catch (error) {
-      console.error("Erro ao carregar dados do localStorage:", error);
-    } finally {
-      setMounted(true);
-    }
-  }, []);
-
-  /**
-   * Remove um jogo da lista
-   * Boa prática: Atualizar estado imutavelmente
-   */
-  const handleDeleteGame = (id: number): void => {
-    const updatedGames = games.filter((game) => game.id !== id);
-    setGames(updatedGames);
-    localStorage.setItem("gamesReview", JSON.stringify(updatedGames));
-  };
-
-  /**
-   * Atualiza a avaliação de um jogo
-   * Valida dados antes de atualizar
-   * Boa prática: Manter consistência entre estado e persistência
-   */
-  const handleUpdateRating = (
-    id: number,
-    newRating: number,
-    newComment: string,
-  ): void => {
-    const game = games.find((g) => g.id === id);
-    if (!game) {
-      console.error("Jogo não encontrado");
-      return;
-    }
-
-    // Validar dados antes de salvar
-    const validation = validateData(
-      {
-        gameName: game.name,
-        rating: newRating,
-        comment: newComment,
-      },
-      GameFormInputSchema,
-    );
-
-    if (!validation.success) {
-      console.error("Erro ao validar dados:", validation.error);
-      alert(validation.error || "Erro ao validar dados");
-      return;
-    }
-
-    const updatedGames = games.map((g) =>
-      g.id === id ? { ...g, rating: newRating, comment: newComment } : g,
-    );
-    setGames(updatedGames);
-    localStorage.setItem("gamesReview", JSON.stringify(updatedGames));
-  };
+  // Custom hook para gerenciar lista de jogos
+  const { games, mounted, deleteGame, updateGameRating } = useGames();
+  const filteredGames = useFuzzySearch(games, searchQuery);
 
   // Garante que apenas renderiza após montagem no cliente (Hydration fix)
   if (!mounted) {
-    return <EmptyState />;
+    return <LoadingState />;
   }
 
   if (games.length === 0) {
@@ -92,19 +28,34 @@ const Home: FC = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-8">Meus Jogos ({games.length})</h2>
-
-      {/* Grid responsivo de cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {games.map((game) => (
-          <GameCard
-            key={game.id}
-            game={game}
-            onDelete={handleDeleteGame}
-            onUpdateRating={handleUpdateRating}
-          />
-        ))}
+      <div className="flex flex-col gap-4 mb-8 md:flex-row md:items-center md:justify-between">
+        <h2 className="text-2xl font-bold">Meus Jogos ({games.length})</h2>
+        <input
+          type="search"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder="Buscar por nome ou comentário..."
+          className="w-full md:w-80 bg-gray-800 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          aria-label="Buscar jogos salvos"
+        />
       </div>
+
+      {filteredGames.length === 0 ? (
+        <div className="bg-gray-800 rounded-lg p-8 text-center text-gray-300">
+          Nenhum jogo encontrado para &quot;{searchQuery.trim()}&quot;.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredGames.map((game) => (
+            <GameCard
+              key={game.id}
+              game={game}
+              onDelete={deleteGame}
+              onUpdateRating={updateGameRating}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

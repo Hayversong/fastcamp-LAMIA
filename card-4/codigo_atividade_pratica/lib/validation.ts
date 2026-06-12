@@ -1,11 +1,5 @@
 import { z } from "zod";
-import type {
-  SearchedGame,
-  GameFormInput,
-  GameData,
-  SavedGame,
-  ValidationResult,
-} from "@/types";
+import type { ValidationResult } from "@/types/api";
 
 /**
  * Schema para dados de um jogo encontrado na API RAWG
@@ -17,6 +11,8 @@ export const SearchedGameSchema = z.object({
   rating: z.number().nullable().default(null),
 });
 
+export type SearchedGame = z.infer<typeof SearchedGameSchema>;
+
 /**
  * Schema para validar inputs do formulário
  */
@@ -25,6 +21,8 @@ export const GameFormInputSchema = z.object({
   rating: z.number().int().min(0).max(10, "Nota deve estar entre 0 e 10"),
   comment: z.string(),
 });
+
+export type GameFormInput = z.infer<typeof GameFormInputSchema>;
 
 /**
  * Schema para validar dados completos do jogo a ser salvo
@@ -37,6 +35,8 @@ export const GameDataSchema = z.object({
   comment: z.string(),
 });
 
+export type GameData = z.infer<typeof GameDataSchema>;
+
 /**
  * Schema para validar dados do jogo após criação (com id e createdAt)
  */
@@ -44,6 +44,8 @@ export const SavedGameSchema = GameDataSchema.extend({
   id: z.number(),
   createdAt: z.string(),
 });
+
+export type SavedGame = z.infer<typeof SavedGameSchema>;
 
 /**
  * Valida dados e retorna erros amigáveis
@@ -60,7 +62,7 @@ export function validateData<T>(
     return { success: true, data: validated };
   } catch (error) {
     if (error instanceof z.ZodError) {
-      const message = error.errors?.[0]?.message || "Dados inválidos";
+      const message = error.issues?.[0]?.message || "Dados inválidos";
       return { success: false, error: message };
     }
     return { success: false, error: "Erro ao validar dados" };
