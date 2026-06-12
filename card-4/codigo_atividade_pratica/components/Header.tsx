@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 /**
  * Componente Header com navegação principal da aplicação
  * Componente responsável apenas pela UI de navegação
  */
-export default function Header(): JSX.Element {
+export default function Header(): ReactNode {
   return (
     <header className="bg-gray-800 shadow-lg">
       <nav className="max-w-6xl mx-auto px-4 py-6">

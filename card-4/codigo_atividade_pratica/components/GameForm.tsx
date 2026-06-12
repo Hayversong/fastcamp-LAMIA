@@ -1,87 +1,56 @@
 "use client";
 
-import { useState, FC, ChangeEvent, FormEvent } from "react";
-import { searchGame } from "@/services/gamesApi";
-import {
-  validateData,
-  GameFormInputSchema,
-  SearchedGameSchema,
-} from "@/lib/validation";
-import type { SearchedGame, GameData, GameFormProps } from "@/types";
+import { FC } from "react";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useGameSearch } from "@/hooks";
+import { GameFormInputSchema } from "@/lib/validation";
+import type { GameData, GameFormInput, GameFormProps } from "@/types";
 
 /**
  * Formulário para adicionar um novo jogo
  * Componentes reutilizáveis recebem callbacks do pai para ações
  */
 const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
-  // Estados para controlar os inputs do formulário
-  const [gameName, setGameName] = useState("");
-  const [rating, setRating] = useState<number>(5);
-  const [comment, setComment] = useState("");
-  const [searchedGame, setSearchedGame] = useState<SearchedGame | null>(null);
-  const [isSearching, setIsSearching] = useState(false);
-  const [error, setError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<GameFormInput>({
+    resolver: zodResolver(GameFormInputSchema),
+    defaultValues: {
+      gameName: "",
+      rating: 5,
+      comment: "",
+    },
+  });
+
+  const gameName = watch("gameName");
+
+  // Custom hook para gerenciar busca de jogos
+  const { searchedGame, isSearching, error, search, clearSearch } =
+    useGameSearch();
+
+  const gameNameField = register("gameName", {
+    onChange: () => clearSearch(),
+  });
 
   /**
    * Busca o jogo na API RAWG
    * Valida inputs antes de fazer requisições
    */
   const handleSearch = async (): Promise<void> => {
-    if (!gameName.trim()) {
-      setError("Digite o nome do jogo");
-      return;
-    }
-
-    setIsSearching(true);
-    setError("");
-
-    try {
-      const gameData = await searchGame(gameName);
-
-      if (gameData) {
-        const gameValidation = validateData(gameData, SearchedGameSchema);
-        if (gameValidation.success && gameValidation.data) {
-          setSearchedGame(gameValidation.data);
-        } else {
-          setError(gameValidation.error || "Erro ao validar dados");
-          setSearchedGame(null);
-        }
-      } else {
-        setError("Jogo não encontrado na API RAWG. Tente outro nome.");
-        setSearchedGame(null);
-      }
-    } catch (err) {
-      console.error("Erro ao buscar jogo:", err);
-      setError("Erro ao buscar jogo. Tente novamente.");
-      setSearchedGame(null);
-    } finally {
-      setIsSearching(false);
-    }
+    await search(gameName);
   };
 
   /**
    * Envia o formulário com os dados do jogo
    * Valida que o jogo foi encontrado antes de enviar
    */
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-
+  const onFormSubmit = (data: GameFormInput): void => {
     if (!searchedGame) {
-      setError("Busque e confirme o jogo primeiro");
-      return;
-    }
-
-    // Validar inputs do formulário
-    const inputValidation = validateData(
-      {
-        gameName: searchedGame.name,
-        rating: parseInt(String(rating), 10),
-        comment,
-      },
-      GameFormInputSchema,
-    );
-    if (!inputValidation.success) {
-      setError(inputValidation.error || "Erro ao validar dados");
       return;
     }
 
@@ -89,30 +58,16 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
       name: searchedGame.name,
       image: searchedGame.image,
       released: searchedGame.released,
-      rating: parseInt(String(rating), 10),
-      comment: comment.trim(),
+      rating: data.rating,
+      comment: data.comment.trim(),
     };
 
     onSubmit(formData);
   };
 
-  const handleGameNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setGameName(e.target.value);
-    setSearchedGame(null);
-    setError("");
-  };
-
-  const handleRatingChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    setRating(e.target.value as unknown as number);
-  };
-
-  const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setComment(e.target.value);
-  };
-
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onFormSubmit)}
       className="bg-gray-800 rounded-lg p-8 shadow-lg"
     >
       {/* Campo: Nome do Jogo */}
@@ -127,8 +82,7 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
           <input
             id="gameName"
             type="text"
-            value={gameName}
-            onChange={handleGameNameChange}
+            {...gameNameField}
             placeholder="Ex: The Legend of Zelda: Breath of the Wild"
             className="flex-1 bg-gray-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={isSearching}
@@ -142,6 +96,9 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
             {isSearching ? "Buscando..." : "Buscar"}
           </button>
         </div>
+        {errors.gameName && (
+          <p className="text-red-400 text-sm mt-2">{errors.gameName.message}</p>
+        )}
       </div>
 
       {/* Informações do jogo encontrado */}
@@ -161,11 +118,15 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
             </p>
           )}
           {searchedGame.image && (
-            <img
-              src={searchedGame.image}
-              alt={searchedGame.name}
-              className="w-24 h-32 object-cover rounded mt-2"
-            />
+            <div className="relative w-24 h-32 mt-2 overflow-hidden rounded">
+              <Image
+                src={searchedGame.image}
+                alt={searchedGame.name}
+                fill
+                sizes="96px"
+                className="object-cover"
+              />
+            </div>
           )}
         </div>
       )}
@@ -185,10 +146,12 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
           type="number"
           min="0"
           max="10"
-          value={rating}
-          onChange={handleRatingChange}
+          {...register("rating", { valueAsNumber: true })}
           className="w-full bg-gray-700 text-white rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        {errors.rating && (
+          <p className="text-red-400 text-sm mt-2">{errors.rating.message}</p>
+        )}
       </div>
 
       {/* Campo: Comentário */}
@@ -198,12 +161,14 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
         </label>
         <textarea
           id="comment"
-          value={comment}
-          onChange={handleCommentChange}
+          {...register("comment")}
           placeholder="O que você achou do jogo?"
           className="w-full bg-gray-700 text-white rounded px-4 py-2 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows={4}
         />
+        {errors.comment && (
+          <p className="text-red-400 text-sm mt-2">{errors.comment.message}</p>
+        )}
       </div>
 
       {/* Botão Submit */}

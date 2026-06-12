@@ -2,28 +2,30 @@
 
 import { useState, FC } from "react";
 import { useRouter } from "next/navigation";
-import { validateData, GameDataSchema } from "@/lib/validation";
+import { useGames, useValidation } from "@/hooks";
+import { GameDataSchema } from "@/lib/validation";
 import GameForm from "@/components/GameForm";
-import { addGame } from "@/services/gamesApi";
 import type { GameData } from "@/types";
 
 const AddGamePage: FC = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { addNewGame } = useGames();
+  const { validate } = useValidation();
 
   const handleAddGame = async (formData: GameData): Promise<void> => {
     setIsLoading(true);
     try {
       // Validar dados antes de salvar
-      const validation = validateData(formData, GameDataSchema);
+      const validation = validate(formData, GameDataSchema);
 
-      if (!validation.success) {
+      if (!validation.success || !validation.data) {
         alert(validation.error || "Erro ao validar dados");
         setIsLoading(false);
         return;
       }
 
-      addGame(validation.data);
+      await addNewGame(validation.data);
       router.push("/");
     } catch (error) {
       console.error("Erro ao adicionar jogo:", error);

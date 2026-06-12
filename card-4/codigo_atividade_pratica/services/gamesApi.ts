@@ -2,7 +2,6 @@ import type { SearchedGame, GameData, SavedGame } from "@/types";
 
 /**
  * Busca jogos na API RAWG através da rota API do Next.js
- * Utiliza localStorage para cache local de buscas já realizadas
  * @param gameName - Nome do jogo a buscar
  * @returns Objeto com dados do jogo (nome, capa, etc) ou null
  */
@@ -10,18 +9,6 @@ export async function searchGame(
   gameName: string,
 ): Promise<SearchedGame | null> {
   try {
-    // Verifica se está no navegador e se o jogo já foi buscado
-    if (typeof window !== "undefined") {
-      const cachedGames = localStorage.getItem("gamesCache");
-      if (cachedGames) {
-        const gamesCache: Record<string, SearchedGame> =
-          JSON.parse(cachedGames);
-        if (gamesCache[gameName]) {
-          return gamesCache[gameName];
-        }
-      }
-    }
-
     // Chama a rota API Next.js em vez de chamar a API RAWG diretamente
     const response = await fetch(
       `/api/games?search=${encodeURIComponent(gameName)}`,
@@ -31,16 +18,7 @@ export async function searchGame(
       throw new Error(`Erro ao buscar jogo: ${response.status}`);
     }
 
-    const gameData: SearchedGame = await response.json();
-
-    if (gameData && typeof window !== "undefined") {
-      // Salva no cache local
-      const cachedGames = localStorage.getItem("gamesCache") || "{}";
-      const gamesCache: Record<string, SearchedGame> = JSON.parse(cachedGames);
-      gamesCache[gameName] = gameData;
-      localStorage.setItem("gamesCache", JSON.stringify(gamesCache));
-    }
-
+    const gameData: SearchedGame | null = await response.json();
     return gameData;
   } catch (error) {
     console.error("Erro ao buscar jogo:", error);
@@ -61,9 +39,14 @@ export function addGame(formData: GameData): SavedGame {
   const savedGames = localStorage.getItem("gamesReview") || "[]";
   const games: SavedGame[] = JSON.parse(savedGames);
 
+  const nextId =
+    games.length > 0
+      ? Math.max(...games.map((game) => game.id)) + 1
+      : Date.now();
+
   const newGame: SavedGame = {
     ...formData,
-    id: Date.now(),
+    id: nextId,
     createdAt: new Date().toISOString(),
   };
 
