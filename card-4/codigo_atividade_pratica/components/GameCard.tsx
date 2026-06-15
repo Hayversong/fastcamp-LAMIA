@@ -6,6 +6,8 @@ import { useValidation } from "@/hooks";
 import { GameFormInputSchema } from "@/lib/validation";
 import type { GameCardProps } from "@/types";
 
+const GAME_PLACEHOLDER_IMAGE = "/images/game-placeholder.svg";
+
 /**
  * Card para exibir informações de um jogo
  */
@@ -15,9 +17,7 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
   const [tempRating, setTempRating] = useState(game.rating);
   const [tempComment, setTempComment] = useState(game.comment);
   const [error, setError] = useState("");
-  const [imageSrc, setImageSrc] = useState(
-    game.image || "https://via.placeholder.com/300x400?text=Sem+Capa",
-  );
+  const [imageSrc, setImageSrc] = useState(game.image || GAME_PLACEHOLDER_IMAGE);
 
   // Custom hook para validação
   const { validate } = useValidation();
@@ -58,7 +58,7 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
   };
 
   const handleImageError = (): void => {
-    setImageSrc("https://via.placeholder.com/300x400?text=Sem+Capa");
+    setImageSrc(GAME_PLACEHOLDER_IMAGE);
   };
 
   const handleRatingChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

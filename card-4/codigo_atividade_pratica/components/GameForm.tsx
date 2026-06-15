@@ -12,7 +12,7 @@ import type { GameData, GameFormInput, GameFormProps } from "@/types";
  * Formulário para adicionar um novo jogo
  * Componentes reutilizáveis recebem callbacks do pai para ações
  */
-const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
+const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
   const {
     register,
     handleSubmit,
@@ -134,6 +134,12 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading }) => {
       {/* Exibir erro se houver */}
       {error && (
         <div className="mb-4 p-3 bg-red-600 text-white rounded">{error}</div>
+      )}
+
+      {submitError && (
+        <div className="mb-4 p-3 bg-red-600 text-white rounded">
+          {submitError}
+        </div>
       )}
 
       {/* Campo: Nota */}

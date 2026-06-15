@@ -8,22 +8,21 @@ import type { SearchedGame, GameData, SavedGame } from "@/types";
 export async function searchGame(
   gameName: string,
 ): Promise<SearchedGame | null> {
-  try {
-    // Chama a rota API Next.js em vez de chamar a API RAWG diretamente
-    const response = await fetch(
-      `/api/games?search=${encodeURIComponent(gameName)}`,
-    );
+  // Chama a rota API Next.js em vez de chamar a API RAWG diretamente
+  const response = await fetch(
+    `/api/games?search=${encodeURIComponent(gameName)}`,
+  );
 
-    if (!response.ok) {
-      throw new Error(`Erro ao buscar jogo: ${response.status}`);
-    }
-
-    const gameData: SearchedGame | null = await response.json();
-    return gameData;
-  } catch (error) {
-    console.error("Erro ao buscar jogo:", error);
+  if (response.status === 404) {
     return null;
   }
+
+  if (!response.ok) {
+    throw new Error(`Erro ao buscar jogo: ${response.status}`);
+  }
+
+  const gameData: SearchedGame | null = await response.json();
+  return gameData;
 }
 
 /**

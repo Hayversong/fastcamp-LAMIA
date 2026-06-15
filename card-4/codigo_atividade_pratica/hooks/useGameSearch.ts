@@ -3,6 +3,10 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { searchGame } from "@/services/gamesApi";
 import type { SearchedGame } from "@/types";
 
+const GAME_SEARCH_QUERY_KEY = "game-search";
+const GAME_SEARCH_STALE_TIME = 1000 * 60 * 5;
+const GAME_NOT_FOUND_MESSAGE = "Jogo não encontrado.";
+
 export function useGameSearch() {
   const queryClient = useQueryClient();
   const [gameName, setGameName] = useState("");
@@ -14,10 +18,10 @@ export function useGameSearch() {
     isFetching: isSearching,
     error: queryError,
   } = useQuery<SearchedGame | null>({
-    queryKey: ["game-search", gameName],
+    queryKey: [GAME_SEARCH_QUERY_KEY, gameName],
     queryFn: () => searchGame(gameName),
     enabled: enabled && gameName.length > 0,
-    staleTime: 1000 * 60 * 5,
+    staleTime: GAME_SEARCH_STALE_TIME,
     retry: 1,
   });
 
@@ -26,7 +30,7 @@ export function useGameSearch() {
     (queryError instanceof Error
       ? `Erro ao buscar jogo: ${queryError.message}`
       : enabled && !isSearching && searchedGame === null
-        ? "Jogo não encontrado"
+        ? GAME_NOT_FOUND_MESSAGE
         : "");
 
   const search = useCallback(
@@ -45,11 +49,17 @@ export function useGameSearch() {
       setEnabled(true);
 
       try {
-        return await queryClient.fetchQuery({
-          queryKey: ["game-search", trimmed],
+        const foundGame = await queryClient.fetchQuery({
+          queryKey: [GAME_SEARCH_QUERY_KEY, trimmed],
           queryFn: () => searchGame(trimmed),
-          staleTime: 1000 * 60 * 5,
+          staleTime: GAME_SEARCH_STALE_TIME,
         });
+
+        if (foundGame === null) {
+          setManualError(GAME_NOT_FOUND_MESSAGE);
+        }
+
+        return foundGame;
       } catch (fetchError) {
         setManualError(
           fetchError instanceof Error
