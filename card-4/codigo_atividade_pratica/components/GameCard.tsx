@@ -8,11 +8,7 @@ import type { GameCardProps } from "@/types";
 
 const GAME_PLACEHOLDER_IMAGE = "/images/game-placeholder.svg";
 
-/**
- * Card para exibir informações de um jogo
- */
 const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
-  // Estados locais para gerenciar edição e dados temporários do card
   const [isEditing, setIsEditing] = useState(false);
   const [tempRating, setTempRating] = useState(game.rating);
   const [tempComment, setTempComment] = useState(game.comment);
@@ -21,13 +17,7 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
     game.image || GAME_PLACEHOLDER_IMAGE,
   );
 
-  /**
-   * Salva as alterações de avaliação e comentário
-   * Valida dados antes de atualizar
-   * Atualiza do pai via callback em vez de estado local
-   */
   const handleSave = (): void => {
-    // Validar dados antes de salvar
     const validation = validateData(
       {
         gameName: game.name,
@@ -47,9 +37,6 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
     setIsEditing(false);
   };
 
-  /**
-   * Cancela edição e restaura valores originais
-   */
   const handleCancel = (): void => {
     setTempRating(game.rating);
     setTempComment(game.comment);
@@ -73,7 +60,6 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
 
   return (
     <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-      {/* Imagem do Jogo */}
       <div className="relative w-full h-64 bg-gray-700 overflow-hidden">
         <Image
           src={imageSrc}
@@ -86,13 +72,12 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
         />
       </div>
 
-      {/* Conteúdo do Card */}
       <div className="p-4">
         <h3 className="text-xl font-bold mb-2 line-clamp-2 text-blue-400">
           {game.name}
         </h3>
 
-        {/* Data de lançamento - Usa formato ISO para evitar hydration error */}
+        {/* Formatação estável para evitar divergência entre servidor e cliente. */}
         {game.released && (
           <p className="text-sm text-gray-400 mb-3">
             {formatDateToBrazilian(game.released)}
@@ -101,7 +86,6 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
 
         {!isEditing ? (
           <>
-            {/* Visualização */}
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-2">
                 <span className="text-yellow-400 text-2xl">★</span>
@@ -118,7 +102,6 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
               )}
             </div>
 
-            {/* Botões */}
             <div className="flex gap-2">
               <button
                 onClick={() => setIsEditing(true)}
@@ -136,7 +119,6 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
           </>
         ) : (
           <>
-            {/* Modo de Edição */}
             {error && (
               <div className="mb-4 p-3 bg-red-600 text-white rounded">
                 {error}
@@ -167,7 +149,6 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
               />
             </div>
 
-            {/* Botões de Salvar/Cancelar */}
             <div className="flex gap-2">
               <button
                 onClick={handleSave}

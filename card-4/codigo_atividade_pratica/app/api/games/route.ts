@@ -1,5 +1,3 @@
-// Rota API para buscar jogos na RAWG
-// Evita problemas de CORS fazendo a requisição no servidor
 import { NextRequest } from "next/server";
 import type { SearchedGame } from "@/types";
 

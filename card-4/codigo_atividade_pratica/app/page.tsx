@@ -6,18 +6,13 @@ import GameCard from "@/components/GameCard";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 
-/**
- * Página inicial - Lista todos os jogos salvos
- * Boa prática: Usar 'use client' para componentes que precisam de interatividade
- */
 const Home: FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Custom hook para gerenciar lista de jogos
   const { games, mounted, deleteGame, updateGameRating } = useGames();
   const filteredGames = useFuzzySearch(games, searchQuery);
 
-  // Garante que apenas renderiza após montagem no cliente (Hydration fix)
+  // A lista vem do localStorage; renderizar só após a montagem evita mismatch.
   if (!mounted) {
     return <LoadingState />;
   }

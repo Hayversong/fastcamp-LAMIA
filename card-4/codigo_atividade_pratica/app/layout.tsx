@@ -28,7 +28,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </GamesProvider>
           </QueryProvider>
 
-          {/* Footer */}
           <footer className="bg-gray-800 text-center py-4 mt-12">
             <p className="text-gray-400">
               © 2025 Games Review ★ desenvolvido por Hayverson

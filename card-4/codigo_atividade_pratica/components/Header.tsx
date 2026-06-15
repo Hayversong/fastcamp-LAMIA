@@ -3,10 +3,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-/**
- * Componente Header com navegação principal da aplicação
- * Componente responsável apenas pela UI de navegação
- */
 export default function Header(): ReactNode {
   return (
     <header className="bg-gray-800 shadow-lg">
@@ -14,9 +10,7 @@ export default function Header(): ReactNode {
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-blue-500">★ Games Review</h1>
 
-          {/* Menu de navegação principal */}
           <ul className="flex gap-6">
-            {/* Link para página inicial */}
             <li>
               <Link
                 href="/"
@@ -26,7 +20,6 @@ export default function Header(): ReactNode {
               </Link>
             </li>
 
-            {/* Link para adicionar novo jogo */}
             <li>
               <Link
                 href="/add"
