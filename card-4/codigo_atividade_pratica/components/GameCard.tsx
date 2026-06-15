@@ -2,8 +2,8 @@
 
 import { useState, FC } from "react";
 import Image from "next/image";
-import { useValidation } from "@/hooks";
-import { GameFormInputSchema } from "@/lib/validation";
+import { formatDateToBrazilian } from "@/lib/format";
+import { GameFormInputSchema, validateData } from "@/lib/validation";
 import type { GameCardProps } from "@/types";
 
 const GAME_PLACEHOLDER_IMAGE = "/images/game-placeholder.svg";
@@ -17,10 +17,9 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
   const [tempRating, setTempRating] = useState(game.rating);
   const [tempComment, setTempComment] = useState(game.comment);
   const [error, setError] = useState("");
-  const [imageSrc, setImageSrc] = useState(game.image || GAME_PLACEHOLDER_IMAGE);
-
-  // Custom hook para validação
-  const { validate } = useValidation();
+  const [imageSrc, setImageSrc] = useState(
+    game.image || GAME_PLACEHOLDER_IMAGE,
+  );
 
   /**
    * Salva as alterações de avaliação e comentário
@@ -29,7 +28,7 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
    */
   const handleSave = (): void => {
     // Validar dados antes de salvar
-    const validation = validate(
+    const validation = validateData(
       {
         gameName: game.name,
         rating: tempRating,
@@ -96,12 +95,7 @@ const GameCard: FC<GameCardProps> = ({ game, onDelete, onUpdateRating }) => {
         {/* Data de lançamento - Usa formato ISO para evitar hydration error */}
         {game.released && (
           <p className="text-sm text-gray-400 mb-3">
-            {new Date(game.released)
-              .toISOString()
-              .split("T")[0]
-              .split("-")
-              .reverse()
-              .join("/")}
+            {formatDateToBrazilian(game.released)}
           </p>
         )}
 

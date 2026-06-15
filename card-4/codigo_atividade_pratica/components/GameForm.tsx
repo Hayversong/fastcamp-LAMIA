@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useGameSearch } from "@/hooks";
+import { formatDateToBrazilian } from "@/lib/format";
 import { GameFormInputSchema } from "@/lib/validation";
 import type { GameData, GameFormInput, GameFormProps } from "@/types";
 
@@ -109,12 +110,7 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
           </p>
           {searchedGame.released && (
             <p className="text-gray-400 text-sm">
-              {new Date(searchedGame.released)
-                .toISOString()
-                .split("T")[0]
-                .split("-")
-                .reverse()
-                .join("/")}
+              {formatDateToBrazilian(searchedGame.released)}
             </p>
           )}
           {searchedGame.image && (
