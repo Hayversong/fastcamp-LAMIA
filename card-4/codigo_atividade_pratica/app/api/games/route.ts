@@ -35,7 +35,8 @@ export async function GET(request: NextRequest): Promise<Response> {
       );
     }
 
-    const url = `${BASE_URL}/games?key=${API_KEY}&search=${gameName}&page_size=1`;
+    const encodedGameName = encodeURIComponent(gameName);
+    const url = `${BASE_URL}/games?key=${API_KEY}&search=${encodedGameName}&page_size=1`;
 
     const response = await fetch(url, {
       headers: {
@@ -63,7 +64,7 @@ export async function GET(request: NextRequest): Promise<Response> {
       return Response.json(searchedGame);
     }
 
-    return Response.json(null);
+    return Response.json({ message: "Game not found" }, { status: 404 });
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Erro desconhecido";

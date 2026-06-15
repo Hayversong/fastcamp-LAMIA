@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -46,21 +47,21 @@ export function GamesProvider({ children }: GamesProviderProps) {
     staleTime: Infinity,
   });
 
-  const addMutation = useMutation({
+  const { mutateAsync: addGameAsync } = useMutation({
     mutationFn: async (formData: GameData) => addGame(formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: GAMES_QUERY_KEY });
     },
   });
 
-  const deleteMutation = useMutation({
+  const { mutateAsync: deleteGameAsync } = useMutation({
     mutationFn: async (id: number) => removeGame(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: GAMES_QUERY_KEY });
     },
   });
 
-  const updateMutation = useMutation({
+  const { mutateAsync: updateGameAsync } = useMutation({
     mutationFn: async ({
       id,
       rating,
@@ -75,27 +76,33 @@ export function GamesProvider({ children }: GamesProviderProps) {
     },
   });
 
-  const addNewGame = async (formData: GameData): Promise<SavedGame> => {
-    const result = await addMutation.mutateAsync(formData);
-    return result;
-  };
+  const addNewGame = useCallback(
+    async (formData: GameData): Promise<SavedGame> => {
+      const result = await addGameAsync(formData);
+      return result;
+    },
+    [addGameAsync],
+  );
 
-  const deleteGame = async (id: number): Promise<void> => {
-    await deleteMutation.mutateAsync(id);
-  };
+  const deleteGame = useCallback(async (id: number): Promise<void> => {
+    await deleteGameAsync(id);
+  }, [deleteGameAsync]);
 
-  const updateGameRating = async (
-    id: number,
-    newRating: number,
-    newComment: string,
-  ): Promise<SavedGame | null> => {
-    const result = await updateMutation.mutateAsync({
-      id,
-      rating: newRating,
-      comment: newComment,
-    });
-    return result;
-  };
+  const updateGameRating = useCallback(
+    async (
+      id: number,
+      newRating: number,
+      newComment: string,
+    ): Promise<SavedGame | null> => {
+      const result = await updateGameAsync({
+        id,
+        rating: newRating,
+        comment: newComment,
+      });
+      return result;
+    },
+    [updateGameAsync],
+  );
 
   const value = useMemo(
     () => ({
@@ -105,7 +112,7 @@ export function GamesProvider({ children }: GamesProviderProps) {
       deleteGame,
       updateGameRating,
     }),
-    [games, mounted, isFetched],
+    [games, mounted, isFetched, addNewGame, deleteGame, updateGameRating],
   );
 
   return (
