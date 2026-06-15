@@ -1,14 +1,9 @@
 import type { SearchedGame, GameData, SavedGame } from "@/types";
 
-/**
- * Busca jogos na API RAWG através da rota API do Next.js
- * @param gameName - Nome do jogo a buscar
- * @returns Objeto com dados do jogo (nome, capa, etc) ou null
- */
 export async function searchGame(
   gameName: string,
 ): Promise<SearchedGame | null> {
-  // Chama a rota API Next.js em vez de chamar a API RAWG diretamente
+  // A API interna mantém a chave RAWG no servidor e normaliza erros HTTP.
   const response = await fetch(
     `/api/games?search=${encodeURIComponent(gameName)}`,
   );
@@ -25,11 +20,6 @@ export async function searchGame(
   return gameData;
 }
 
-/**
- * Adiciona um novo jogo ao localStorage
- * @param formData - Dados do jogo (name, rating, comment, etc)
- * @returns Jogo adicionado com id e createdAt
- */
 export function addGame(formData: GameData): SavedGame {
   if (typeof window === "undefined") {
     throw new Error("addGame deve ser chamado no navegador");
@@ -55,10 +45,6 @@ export function addGame(formData: GameData): SavedGame {
   return newGame;
 }
 
-/**
- * Recupera todos os jogos salvos do localStorage
- * @returns Array com todos os jogos salvos
- */
 export function getGames(): SavedGame[] {
   if (typeof window === "undefined") {
     return [];
@@ -73,10 +59,6 @@ export function getGames(): SavedGame[] {
   }
 }
 
-/**
- * Remove um jogo do localStorage
- * @param id - ID do jogo a remover
- */
 export function removeGame(id: number): void {
   if (typeof window === "undefined") {
     return;
@@ -88,12 +70,6 @@ export function removeGame(id: number): void {
   localStorage.setItem("gamesReview", JSON.stringify(filteredGames));
 }
 
-/**
- * Atualiza um jogo no localStorage
- * @param id - ID do jogo
- * @param updates - Dados a atualizar
- * @returns Jogo atualizado ou null
- */
 export function updateGame(
   id: number,
   updates: Partial<Omit<SavedGame, "id" | "createdAt">>,

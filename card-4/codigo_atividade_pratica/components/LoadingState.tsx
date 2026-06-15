@@ -1,8 +1,6 @@
-/**
- * Skeleton exibido enquanto os jogos ainda estão sendo carregados do localStorage
- * Evita o flash de "Nenhum jogo adicionado" antes da hidratação
- */
 import type { ReactNode } from "react";
+
+// Evita exibir o estado vazio antes da leitura do localStorage no cliente.
 
 export default function LoadingState(): ReactNode {
   return (

@@ -1,7 +1,3 @@
-/**
- * Componente exibido quando não há jogos salvos
- * Componentes sem estado podem ser funções simples
- */
 import Link from "next/link";
 import type { ReactNode } from "react";
 

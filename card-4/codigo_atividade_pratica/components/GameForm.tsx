@@ -9,10 +9,6 @@ import { formatDateToBrazilian } from "@/lib/format";
 import { GameFormInputSchema } from "@/lib/validation";
 import type { GameData, GameFormInput, GameFormProps } from "@/types";
 
-/**
- * Formulário para adicionar um novo jogo
- * Componentes reutilizáveis recebem callbacks do pai para ações
- */
 const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
   const {
     register,
@@ -30,7 +26,6 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
 
   const gameName = watch("gameName");
 
-  // Custom hook para gerenciar busca de jogos
   const { searchedGame, isSearching, error, search, clearSearch } =
     useGameSearch();
 
@@ -38,18 +33,10 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
     onChange: () => clearSearch(),
   });
 
-  /**
-   * Busca o jogo na API RAWG
-   * Valida inputs antes de fazer requisições
-   */
   const handleSearch = async (): Promise<void> => {
     await search(gameName);
   };
 
-  /**
-   * Envia o formulário com os dados do jogo
-   * Valida que o jogo foi encontrado antes de enviar
-   */
   const onFormSubmit = (data: GameFormInput): void => {
     if (!searchedGame) {
       return;
@@ -71,7 +58,6 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
       onSubmit={handleSubmit(onFormSubmit)}
       className="bg-gray-800 rounded-lg p-8 shadow-lg"
     >
-      {/* Campo: Nome do Jogo */}
       <div className="mb-6">
         <label
           htmlFor="gameName"
@@ -102,7 +88,6 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
         )}
       </div>
 
-      {/* Informações do jogo encontrado */}
       {searchedGame && (
         <div className="mb-6 p-4 bg-gray-700 rounded">
           <p className="text-gray-300 mb-2">
@@ -127,7 +112,6 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
         </div>
       )}
 
-      {/* Exibir erro se houver */}
       {error && (
         <div className="mb-4 p-3 bg-red-600 text-white rounded">{error}</div>
       )}
@@ -138,7 +122,6 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
         </div>
       )}
 
-      {/* Campo: Nota */}
       <div className="mb-6">
         <label htmlFor="rating" className="block text-gray-300 font-bold mb-2">
           Nota (0-10) *
@@ -156,7 +139,6 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
         )}
       </div>
 
-      {/* Campo: Comentário */}
       <div className="mb-6">
         <label htmlFor="comment" className="block text-gray-300 font-bold mb-2">
           Comentário
@@ -173,7 +155,6 @@ const GameForm: FC<GameFormProps> = ({ onSubmit, isLoading, submitError }) => {
         )}
       </div>
 
-      {/* Botão Submit */}
       <button
         type="submit"
         disabled={isLoading}
