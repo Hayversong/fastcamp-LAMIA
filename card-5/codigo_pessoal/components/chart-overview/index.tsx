@@ -2,6 +2,7 @@
 
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import { chartData, chartMeta } from "@/components/dashboard-data";
+import { formatMonthLabel } from "@/lib/format";
 import {
   Card,
   CardContent,
@@ -27,7 +28,7 @@ export function ChartOverview() {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value: string) => value.slice(0, 3)}
+              tickFormatter={formatMonthLabel}
             />
             <Bar
               dataKey="desktop"
