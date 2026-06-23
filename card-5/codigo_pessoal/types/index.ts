@@ -4,3 +4,4 @@ export type {
   NavItem,
   RecentSale,
 } from "./dashboard";
+export type { ValidationResult } from "./api";
