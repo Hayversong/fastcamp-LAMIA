@@ -3,7 +3,9 @@ import { Home } from "lucide-react";
 import {
   ChartDataPointSchema,
   MetricCardDataSchema,
+  MetricFormSchema,
   RecentSaleSchema,
+  SaleFormSchema,
   validateData,
 } from "@/lib/validation";
 
@@ -50,5 +52,28 @@ describe("validateData", () => {
     );
 
     expect(result.success).toBe(true);
+  });
+
+  it("derives the sale form validation from the recent sale schema", () => {
+    const result = SaleFormSchema.safeParse({
+      name: "Cliente",
+      email: "cliente@example.com",
+      amount: "125.50",
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.amount).toBe(125.5);
+    }
+  });
+
+  it("derives the metric form validation from the metric card schema", () => {
+    expect(
+      MetricFormSchema.safeParse({
+        title: "Conversao",
+        description: "Ultimos 30 dias",
+        value: "4,2%",
+      }).success,
+    ).toBe(true);
   });
 });
