@@ -37,17 +37,14 @@ export const SignInSchema = z.object({
   password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
 });
 
-export const SaleFormSchema = z.object({
-  name: z.string().min(2, "Informe o nome do cliente"),
-  email: z.string().email("Informe um e-mail valido"),
+export const SaleFormSchema = RecentSaleSchema.pick({
+  name: true,
+  email: true,
+}).extend({
   amount: z.coerce.number().positive("O valor deve ser maior que zero"),
 });
 
-export const MetricFormSchema = z.object({
-  title: z.string().min(2, "Informe o titulo"),
-  description: z.string().min(2, "Informe a descricao"),
-  value: z.string().min(1, "Informe o valor"),
-});
+export const MetricFormSchema = MetricCardDataSchema.omit({ icon: true });
 
 export type SignInInput = z.infer<typeof SignInSchema>;
 export type SaleFormInput = z.infer<typeof SaleFormSchema>;
