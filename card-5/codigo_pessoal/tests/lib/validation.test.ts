@@ -6,8 +6,8 @@ import {
   MetricFormSchema,
   RecentSaleSchema,
   SaleFormSchema,
-  validateData,
-} from "@/lib/validation";
+} from "@/features/dashboard/schemas";
+import { validateData } from "@/lib/validate-data";
 
 describe("validateData", () => {
   it("returns parsed data when schema validation succeeds", () => {

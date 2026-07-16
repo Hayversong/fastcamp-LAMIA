@@ -3,8 +3,8 @@
 import { BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useDashboardStore } from "@/stores/dashboard-store";
-import { logoutItem, navItems } from "@/components/dashboard-data";
+import { useAuthStore } from "@/features/auth/store/auth-store";
+import { logoutItem, navItems } from "@/features/dashboard/data";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/tooltip";
 
 export function Sidebar() {
-  const { signOut } = useDashboardStore();
+  const { signOut } = useAuthStore();
   const router = useRouter();
   const LogoutIcon = logoutItem.icon;
 

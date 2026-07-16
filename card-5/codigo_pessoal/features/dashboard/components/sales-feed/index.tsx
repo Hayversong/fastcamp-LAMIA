@@ -1,6 +1,6 @@
 "use client";
 
-import { useDashboardStore } from "@/stores/dashboard-store";
+import { useDashboardStore } from "@/features/dashboard/store/dashboard-store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,

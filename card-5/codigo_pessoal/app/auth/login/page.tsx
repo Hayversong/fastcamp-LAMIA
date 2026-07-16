@@ -2,11 +2,11 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LoginForm } from "@/components/login-form";
-import { useDashboardStore } from "@/stores/dashboard-store";
+import { LoginForm } from "@/features/auth/components/login-form";
+import { useAuthStore } from "@/features/auth/store/auth-store";
 
 export default function LoginPage() {
-  const { hydrated, userEmail, hydrateSession } = useDashboardStore();
+  const { hydrated, userEmail, hydrateSession } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {

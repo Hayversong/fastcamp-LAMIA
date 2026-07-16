@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { SignInSchema, type SignInInput } from "@/lib/validation";
-import { useDashboardStore } from "@/stores/dashboard-store";
+import { SignInSchema, type SignInInput } from "@/features/auth/schemas";
+import { useAuthStore } from "@/features/auth/store/auth-store";
 
 const inputClass = "h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 
 export function LoginForm() {
-  const { signIn } = useDashboardStore();
+  const { signIn } = useAuthStore();
   const router = useRouter();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInInput>({
     resolver: zodResolver(SignInSchema),

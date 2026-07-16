@@ -1,7 +1,7 @@
 "use client";
 
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-import { chartData, chartMeta } from "@/components/dashboard-data";
+import { chartData, chartMeta } from "@/features/dashboard/data";
 import { formatMonthLabel } from "@/lib/format";
 import {
   Card,

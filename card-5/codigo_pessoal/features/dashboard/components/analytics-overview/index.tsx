@@ -1,5 +1,5 @@
-import { ChartOverview } from "@/components/chart-overview";
-import { SalesFeed } from "@/components/sales-feed";
+import { ChartOverview } from "@/features/dashboard/components/chart-overview";
+import { SalesFeed } from "@/features/dashboard/components/sales-feed";
 
 export function AnalyticsOverview() {
   return (

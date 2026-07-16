@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { MetricFormSchema, SaleFormSchema, type MetricFormInput, type SaleFormInput } from "@/lib/validation";
-import { useDashboardStore } from "@/stores/dashboard-store";
+import { MetricFormSchema, SaleFormSchema, type MetricFormInput, type SaleFormInput } from "@/features/dashboard/schemas";
+import { useDashboardStore } from "@/features/dashboard/store/dashboard-store";
 
 const inputClass = "h-9 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring";
 
