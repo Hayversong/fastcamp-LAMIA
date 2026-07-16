@@ -1,4 +1,6 @@
-import { recentSales } from "@/components/dashboard-data";
+"use client";
+
+import { useDashboardStore } from "@/stores/dashboard-store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
@@ -9,6 +11,7 @@ import {
 } from "@/components/ui/card";
 
 export function SalesFeed() {
+  const { sales } = useDashboardStore();
   return (
     <Card className="flex-1">
       <CardHeader>
@@ -16,8 +19,8 @@ export function SalesFeed() {
         <CardDescription>Voce recebeu 265 vendas este mes.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {recentSales.map((sale) => (
-          <article key={sale.email} className="flex items-center gap-4">
+        {sales.map((sale, index) => (
+          <article key={`${sale.email}-${index}`} className="flex items-center gap-4">
             <Avatar>
               <AvatarImage src={sale.avatarUrl} alt={sale.name} />
               <AvatarFallback>{sale.fallback}</AvatarFallback>

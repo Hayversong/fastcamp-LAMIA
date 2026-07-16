@@ -1,4 +1,6 @@
-import { metrics } from "@/components/dashboard-data";
+"use client";
+
+import { useDashboardStore } from "@/stores/dashboard-store";
 import {
   Card,
   CardContent,
@@ -8,6 +10,7 @@ import {
 } from "@/components/ui/card";
 
 export function MetricsGrid() {
+  const { metrics } = useDashboardStore();
   return (
     <section
       aria-label="Metricas principais"
