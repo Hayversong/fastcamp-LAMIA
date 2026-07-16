@@ -15,7 +15,7 @@ import type {
   MetricCardData,
   NavItem,
   RecentSale,
-} from "@/types";
+} from "@/features/dashboard/types";
 
 export const navItems: NavItem[] = [
   { label: "Dashboard", href: "/", icon: Home },

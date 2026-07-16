@@ -2,14 +2,14 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { AnalyticsOverview } from "@/components/analytics-overview";
-import { DashboardForms } from "@/components/dashboard-forms";
-import { DashboardShell } from "@/components/dashboard-shell";
-import { MetricsGrid } from "@/components/metrics-grid";
-import { useDashboardStore } from "@/stores/dashboard-store";
+import { useAuthStore } from "@/features/auth/store/auth-store";
+import { AnalyticsOverview } from "@/features/dashboard/components/analytics-overview";
+import { DashboardForms } from "@/features/dashboard/components/dashboard-forms";
+import { DashboardShell } from "@/features/dashboard/components/dashboard-shell";
+import { MetricsGrid } from "@/features/dashboard/components/metrics-grid";
 
 export default function HomePage() {
-  const { hydrated, userEmail, hydrateSession } = useDashboardStore();
+  const { hydrated, userEmail, hydrateSession } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {

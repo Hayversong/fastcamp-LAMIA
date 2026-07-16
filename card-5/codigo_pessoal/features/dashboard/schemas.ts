@@ -1,6 +1,5 @@
-import { z } from "zod";
 import type { LucideIcon } from "lucide-react";
-import type { ValidationResult } from "@/types/api";
+import { z } from "zod";
 
 export const NavItemSchema = z.object({
   label: z.string().min(1, "Label e obrigatorio"),
@@ -32,11 +31,6 @@ export const RecentSaleSchema = z.object({
   fallback: z.string().min(1).max(3),
 });
 
-export const SignInSchema = z.object({
-  email: z.string().email("Informe um e-mail valido"),
-  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
-});
-
 export const SaleFormSchema = RecentSaleSchema.pick({
   name: true,
   email: true,
@@ -46,27 +40,5 @@ export const SaleFormSchema = RecentSaleSchema.pick({
 
 export const MetricFormSchema = MetricCardDataSchema.omit({ icon: true });
 
-export type SignInInput = z.infer<typeof SignInSchema>;
 export type SaleFormInput = z.infer<typeof SaleFormSchema>;
 export type MetricFormInput = z.infer<typeof MetricFormSchema>;
-
-export type NavItem = z.infer<typeof NavItemSchema>;
-export type MetricCardData = z.infer<typeof MetricCardDataSchema>;
-export type ChartDataPoint = z.infer<typeof ChartDataPointSchema>;
-export type RecentSale = z.infer<typeof RecentSaleSchema>;
-
-export function validateData<T>(
-  data: unknown,
-  schema: z.ZodSchema<T>,
-): ValidationResult<T> {
-  const result = schema.safeParse(data);
-
-  if (result.success) {
-    return { success: true, data: result.data };
-  }
-
-  return {
-    success: false,
-    error: result.error.issues[0]?.message ?? "Dados invalidos",
-  };
-}

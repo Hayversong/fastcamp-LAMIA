@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import { MobileHeader } from "@/components/mobile-header";
-import { Sidebar } from "@/components/sidebar";
+import { MobileHeader } from "@/features/dashboard/components/mobile-header";
+import { Sidebar } from "@/features/dashboard/components/sidebar";
 
 interface DashboardShellProps {
   children: ReactNode;

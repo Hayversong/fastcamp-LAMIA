@@ -5,44 +5,20 @@ import { create } from "zustand";
 import {
   metrics as initialMetrics,
   recentSales as initialSales,
-} from "@/components/dashboard-data";
-import type { MetricFormInput, SaleFormInput } from "@/lib/validation";
-import type { MetricCardData, RecentSale } from "@/types";
+} from "@/features/dashboard/data";
+import type { MetricFormInput, SaleFormInput } from "@/features/dashboard/schemas";
+import type { MetricCardData, RecentSale } from "@/features/dashboard/types";
 
 interface DashboardStore {
-  hydrated: boolean;
-  userEmail: string | null;
   metrics: MetricCardData[];
   sales: RecentSale[];
-  hydrateSession: () => void;
-  signIn: (email: string) => void;
-  signOut: () => void;
   addSale: (sale: SaleFormInput) => void;
   saveMetric: (metric: MetricFormInput, index?: number) => void;
 }
 
 export const useDashboardStore = create<DashboardStore>((set) => ({
-  hydrated: false,
-  userEmail: null,
   metrics: initialMetrics,
   sales: initialSales,
-
-  hydrateSession() {
-    set({
-      userEmail: window.localStorage.getItem("lamia-user"),
-      hydrated: true,
-    });
-  },
-
-  signIn(email) {
-    window.localStorage.setItem("lamia-user", email);
-    set({ userEmail: email });
-  },
-
-  signOut() {
-    window.localStorage.removeItem("lamia-user");
-    set({ userEmail: null });
-  },
 
   addSale(sale) {
     const fallback = sale.name

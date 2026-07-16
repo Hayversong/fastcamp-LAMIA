@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { metrics, recentSales } from "@/components/dashboard-data";
-import { useDashboardStore } from "@/stores/dashboard-store";
+import { metrics, recentSales } from "@/features/dashboard/data";
+import { useDashboardStore } from "@/features/dashboard/store/dashboard-store";
 
 describe("dashboard store", () => {
   beforeEach(() => {
