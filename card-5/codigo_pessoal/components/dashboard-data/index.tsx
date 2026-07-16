@@ -27,7 +27,7 @@ export const navItems: NavItem[] = [
 
 export const logoutItem: NavItem = {
   label: "Sair",
-  href: "#logout",
+  href: "/auth/login",
   icon: LogOut,
 };
 

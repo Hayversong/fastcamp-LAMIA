@@ -1,4 +1,9 @@
+"use client";
+
 import { Menu } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useDashboardStore } from "@/stores/dashboard-store";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,7 +15,14 @@ import {
 import { logoutItem, navItems } from "@/components/dashboard-data";
 
 export function MobileHeader() {
+  const { signOut } = useDashboardStore();
+  const router = useRouter();
   const LogoutIcon = logoutItem.icon;
+
+  function handleSignOut() {
+    signOut();
+    router.push("/auth/login");
+  }
 
   return (
     <header className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b bg-background px-4 sm:hidden">
@@ -30,24 +42,25 @@ export function MobileHeader() {
               const Icon = item.icon;
 
               return (
-                <a
+                <Link
                   key={item.label}
                   href={item.href}
                   className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
                 >
                   <Icon className="h-4 w-4" />
                   {item.label}
-                </a>
+                </Link>
               );
             })}
           </nav>
-          <a
-            href={logoutItem.href}
+          <button
+            type="button"
+            onClick={handleSignOut}
             className="mt-auto flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
           >
             <LogoutIcon className="h-4 w-4" />
             {logoutItem.label}
-          </a>
+          </button>
         </SheetContent>
       </Sheet>
       <strong className="text-sm font-semibold tracking-tight">
