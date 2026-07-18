@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
+import { MOCK_CREDENTIALS } from "@/features/auth/constants";
 import { useAuthStore } from "@/features/auth/store/auth-store";
 
 describe("auth store", () => {
@@ -8,14 +9,26 @@ describe("auth store", () => {
   });
 
   it("autentica e persiste a sessao mock", () => {
-    useAuthStore.getState().signIn("usuario@example.com");
+    const authenticated = useAuthStore.getState().signIn(MOCK_CREDENTIALS);
 
-    expect(useAuthStore.getState().userEmail).toBe("usuario@example.com");
-    expect(window.localStorage.getItem("lamia-user")).toBe("usuario@example.com");
+    expect(authenticated).toBe(true);
+    expect(useAuthStore.getState().userEmail).toBe(MOCK_CREDENTIALS.email);
+    expect(window.localStorage.getItem("lamia-user")).toBe(MOCK_CREDENTIALS.email);
+  });
+
+  it("rejeita credenciais mock invalidas", () => {
+    const authenticated = useAuthStore.getState().signIn({
+      email: "outro@example.com",
+      password: "senha-invalida",
+    });
+
+    expect(authenticated).toBe(false);
+    expect(useAuthStore.getState().userEmail).toBeNull();
+    expect(window.localStorage.getItem("lamia-user")).toBeNull();
   });
 
   it("encerra a sessao e remove a persistencia", () => {
-    useAuthStore.getState().signIn("usuario@example.com");
+    useAuthStore.getState().signIn(MOCK_CREDENTIALS);
     useAuthStore.getState().signOut();
 
     expect(useAuthStore.getState().userEmail).toBeNull();
