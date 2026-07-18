@@ -21,6 +21,8 @@ describe("dashboard store", () => {
       amount: "+R$\u00a01.500,00",
       fallback: "AS",
     });
+    expect(sale.id).toMatch(/^[0-9a-f-]{36}$/i);
+    expect(recentSales.some((item) => item.id === sale.id)).toBe(false);
   });
 
   it("cadastra e edita metricas", () => {

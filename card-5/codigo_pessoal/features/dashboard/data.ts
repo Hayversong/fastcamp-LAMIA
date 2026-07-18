@@ -80,6 +80,7 @@ export const chartMeta = {
 
 export const recentSales: RecentSale[] = [
   {
+    id: "00000000-0000-4000-8000-000000000001",
     name: "Marina Costa",
     email: "marina.costa@email.com",
     amount: "+R$ 2.450,00",
@@ -87,6 +88,7 @@ export const recentSales: RecentSale[] = [
     fallback: "MC",
   },
   {
+    id: "00000000-0000-4000-8000-000000000002",
     name: "Rafael Lima",
     email: "rafael.lima@email.com",
     amount: "+R$ 1.250,00",
@@ -94,6 +96,7 @@ export const recentSales: RecentSale[] = [
     fallback: "RL",
   },
   {
+    id: "00000000-0000-4000-8000-000000000003",
     name: "Beatriz Rocha",
     email: "beatriz.rocha@email.com",
     amount: "+R$ 890,00",
@@ -101,6 +104,7 @@ export const recentSales: RecentSale[] = [
     fallback: "BR",
   },
   {
+    id: "00000000-0000-4000-8000-000000000004",
     name: "Lucas Pereira",
     email: "lucas.pereira@email.com",
     amount: "+R$ 640,00",

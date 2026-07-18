@@ -16,11 +16,11 @@ export function SalesFeed() {
     <Card className="flex-1">
       <CardHeader>
         <CardTitle>Vendas recentes</CardTitle>
-        <CardDescription>Voce recebeu 265 vendas este mes.</CardDescription>
+        <CardDescription>Voce recebeu {sales.length} vendas este mes.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
-        {sales.map((sale, index) => (
-          <article key={`${sale.email}-${index}`} className="flex items-center gap-4">
+        {sales.map((sale) => (
+          <article key={sale.id} className="flex items-center gap-4">
             <Avatar>
               <AvatarImage src={sale.avatarUrl} alt={sale.name} />
               <AvatarFallback>{sale.fallback}</AvatarFallback>

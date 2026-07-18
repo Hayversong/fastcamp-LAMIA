@@ -35,6 +35,7 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
     set((state) => ({
       sales: [
         {
+          id: crypto.randomUUID(),
           name: sale.name,
           email: sale.email,
           amount: `+${formattedAmount}`,

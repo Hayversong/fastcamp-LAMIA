@@ -29,6 +29,7 @@ export const RecentSaleSchema = z.object({
   amount: z.string().min(1, "Valor e obrigatorio"),
   avatarUrl: z.string().url("Avatar invalido"),
   fallback: z.string().min(1).max(3),
+  id: z.string().uuid("ID da venda invalido"),
 });
 
 export const SaleFormSchema = RecentSaleSchema.pick({

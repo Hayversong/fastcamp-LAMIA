@@ -17,7 +17,8 @@ export function DashboardForms() {
   const { addSale, saveMetric, metrics } = useDashboardStore();
   const saleForm = useForm<SaleFormInput>({ resolver: zodResolver(SaleFormSchema), defaultValues: { name: "", email: "", amount: 0 } });
   const metricForm = useForm<MetricFormInput>({ resolver: zodResolver(MetricFormSchema), defaultValues: { title: "", description: "", value: "" } });
-  const selectedIndex = metricForm.watch("title") ? metrics.findIndex((item) => item.title === metricForm.watch("title")) : -1;
+  const title = metricForm.watch("title");
+  const selectedIndex = title ? metrics.findIndex((item) => item.title === title) : -1;
 
   return (
     <section id="formularios" aria-label="Alimentacao de dados" className="grid gap-4 lg:grid-cols-2">
