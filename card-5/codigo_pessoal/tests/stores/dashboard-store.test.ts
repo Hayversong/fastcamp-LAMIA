@@ -1,0 +1,44 @@
+import { beforeEach, describe, expect, it } from "vitest";
+import { metrics, recentSales } from "@/features/dashboard/data";
+import { useDashboardStore } from "@/features/dashboard/store/dashboard-store";
+
+describe("dashboard store", () => {
+  beforeEach(() => {
+    useDashboardStore.setState({ metrics, sales: recentSales });
+  });
+
+  it("adiciona uma venda ao inicio do feed", () => {
+    useDashboardStore.getState().addSale({
+      name: "Ana Souza",
+      email: "ana@example.com",
+      amount: 1500,
+    });
+
+    const [sale] = useDashboardStore.getState().sales;
+    expect(sale).toMatchObject({
+      name: "Ana Souza",
+      email: "ana@example.com",
+      amount: "+R$\u00a01.500,00",
+      fallback: "AS",
+    });
+    expect(sale.id).toMatch(/^[0-9a-f-]{36}$/i);
+    expect(recentSales.some((item) => item.id === sale.id)).toBe(false);
+  });
+
+  it("cadastra e edita metricas", () => {
+    const store = useDashboardStore.getState();
+    store.saveMetric({ title: "Conversao", description: "Ultimos 30 dias", value: "4,2%" });
+
+    const createdIndex = useDashboardStore.getState().metrics.length - 1;
+    useDashboardStore.getState().saveMetric(
+      { title: "Conversao", description: "Ultimos 90 dias", value: "5,1%" },
+      createdIndex,
+    );
+
+    expect(useDashboardStore.getState().metrics[createdIndex]).toMatchObject({
+      title: "Conversao",
+      description: "Ultimos 90 dias",
+      value: "5,1%",
+    });
+  });
+});
