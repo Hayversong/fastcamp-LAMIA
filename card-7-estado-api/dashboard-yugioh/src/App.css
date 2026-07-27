@@ -213,6 +213,61 @@ tbody tr:last-child td {
   background: #7770e5;
 }
 
+.regulation__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filters label span {
+  color: #8d94a5;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.filters input,
+.filters select {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #353b49;
+  border-radius: 8px;
+  outline: none;
+  color: #e8eaf0;
+  background: #0f131b;
+  font: inherit;
+}
+
+.filters input {
+  width: 180px;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: #7770e5;
+  box-shadow: 0 0 0 3px rgba(119, 112, 229, 0.16);
+}
+
+.empty-state {
+  margin: 0;
+  padding: 32px 24px;
+  border-top: 1px solid #292e3a;
+  color: #8d94a5;
+  text-align: center;
+}
+
 @media (max-width: 700px) {
   .header {
     padding: 14px 20px;
@@ -236,5 +291,60 @@ tbody tr:last-child td {
   td {
     padding: 14px 16px;
     white-space: nowrap;
+  }
+
+  .regulation__heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .filters {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .filters label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .filters label span {
+    color: #8d94a5;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .filters input,
+  .filters select {
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid #353b49;
+    border-radius: 8px;
+    outline: none;
+    color: #e8eaf0;
+    background: #0f131b;
+    font: inherit;
+  }
+
+  .filters input {
+    width: 180px;
+  }
+
+  .filters input:focus,
+  .filters select:focus {
+    border-color: #7770e5;
+    box-shadow: 0 0 0 3px rgba(119, 112, 229, 0.16);
+  }
+
+  .empty-state {
+    margin: 0;
+    padding: 32px 24px;
+    border-top: 1px solid #292e3a;
+    color: #8d94a5;
+    text-align: center;
   }
 }
