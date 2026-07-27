@@ -22,6 +22,7 @@ function getLimitLabel(limit: RegulationLimit): string {
 function RegulationContent() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const regulationsQuery = useRegulationsQuery();
 
@@ -58,6 +59,18 @@ function RegulationContent() {
 
     return matchesSearch && matchesStatus;
   });
+
+  const cardsPerPage = 20;
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredCards.length / cardsPerPage),
+  );
+
+  const firstCardIndex = (currentPage - 1) * cardsPerPage;
+  const lastCardIndex = firstCardIndex + cardsPerPage;
+
+  const paginatedCards = filteredCards.slice(firstCardIndex, lastCardIndex);
 
   return (
     <>
@@ -96,7 +109,10 @@ function RegulationContent() {
                 type="search"
                 value={search}
                 placeholder="Ex.: 4023"
-                onChange={(event) => setSearch(event.target.value)}
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                  setCurrentPage(1);
+                }}
               />
             </label>
 
@@ -105,9 +121,10 @@ function RegulationContent() {
 
               <select
                 value={statusFilter}
-                onChange={(event) =>
-                  setStatusFilter(event.target.value as StatusFilter)
-                }
+                onChange={(event) => {
+                  setStatusFilter(event.target.value as StatusFilter);
+                  setCurrentPage(1);
+                }}
               >
                 <option value="all">Todos</option>
                 <option value="0">Proibidas</option>
@@ -129,7 +146,7 @@ function RegulationContent() {
             </thead>
 
             <tbody>
-              {filteredCards.slice(0, 20).map((card) => (
+              {paginatedCards.map((card) => (
                 <tr key={card.cardId}>
                   <td>#{card.cardId}</td>
 
@@ -145,6 +162,34 @@ function RegulationContent() {
             </tbody>
           </table>
         </div>
+
+        {filteredCards.length > 0 && (
+          <nav className="pagination" aria-label="Paginação da lista de cartas">
+            <button
+              type="button"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+            >
+              Anterior
+            </button>
+
+            <span>
+              Página <strong>{currentPage}</strong> de{" "}
+              <strong>{totalPages}</strong>
+            </span>
+
+            <button
+              type="button"
+              disabled={currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage((page) => Math.min(totalPages, page + 1))
+              }
+            >
+              Próxima
+            </button>
+          </nav>
+        )}
+
         {filteredCards.length === 0 && (
           <p className="empty-state">
             Nenhuma carta corresponde aos filtros selecionados.
