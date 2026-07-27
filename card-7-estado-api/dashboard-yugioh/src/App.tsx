@@ -1,3 +1,4 @@
+import { Header } from "./components/Header";
 import { useRegulationsQuery } from "./modules/regulations/hooks/useRegulationsQuery";
 import type { RegulationLimit } from "./modules/regulations/types";
 import "./App.css";
@@ -15,64 +16,106 @@ function getLimitLabel(limit: RegulationLimit): string {
   }
 }
 
-function App() {
+function RegulationContent() {
   const regulationsQuery = useRegulationsQuery();
 
   if (regulationsQuery.isPending) {
     return (
-      <main>
-        <h1>Regulamentação Yu-Gi-Oh!</h1>
+      <div className="feedback">
         <p>Carregando lista de cartas...</p>
-      </main>
+      </div>
     );
   }
 
   if (regulationsQuery.isError) {
     return (
-      <main>
-        <h1>Regulamentação Yu-Gi-Oh!</h1>
-        <p>Não foi possível carregar os dados.</p>
+      <div className="feedback feedback--error">
+        <strong>Não foi possível carregar os dados.</strong>
         <p>{regulationsQuery.error.message}</p>
 
         <button onClick={() => regulationsQuery.refetch()}>
           Tentar novamente
         </button>
-      </main>
+      </div>
     );
   }
 
   const { date, cards } = regulationsQuery.data;
 
   return (
-    <main>
-      <h1>Regulamentação Yu-Gi-Oh!</h1>
+    <>
+      <section className="summary">
+        <article className="summary__card">
+          <span>Modalidade</span>
+          <strong>Master Duel</strong>
+        </article>
 
-      <p>Lista atual do Master Duel</p>
-      <p>Em vigor desde: {date}</p>
-      <p>Total de cartas regulamentadas: {cards.length}</p>
+        <article className="summary__card">
+          <span>Em vigor desde</span>
+          <strong>{date}</strong>
+        </article>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID da carta</th>
-            <th>Status</th>
-            <th>Cópias permitidas</th>
-          </tr>
-        </thead>
+        <article className="summary__card">
+          <span>Cartas regulamentadas</span>
+          <strong>{cards.length}</strong>
+        </article>
+      </section>
 
-        <tbody>
-          {cards.slice(0, 20).map((card) => (
-            <tr key={card.cardId}>
-              <td>{card.cardId}</td>
-              <td>{getLimitLabel(card.limit)}</td>
-              <td>{card.limit}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <section className="regulation">
+        <div className="regulation__heading">
+          <div>
+            <h2>Lista de regulamentação</h2>
+            <p>Exibindo as primeiras 20 cartas.</p>
+          </div>
+        </div>
 
-      <p>Exibindo as primeiras 20 cartas.</p>
-    </main>
+        <div className="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID da carta</th>
+                <th>Status</th>
+                <th>Cópias permitidas</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {cards.slice(0, 20).map((card) => (
+                <tr key={card.cardId}>
+                  <td>#{card.cardId}</td>
+
+                  <td>
+                    <span className={`status status--${card.limit}`}>
+                      {getLimitLabel(card.limit)}
+                    </span>
+                  </td>
+
+                  <td>{card.limit}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <>
+      <Header />
+
+      <main className="dashboard">
+        <section className="dashboard__intro">
+          <span>Forbidden & Limited List</span>
+          <h1>Regulamentação Yu-Gi-Oh!</h1>
+          <p>Acompanhe a lista atual de restrições do Master Duel.</p>
+        </section>
+
+        <RegulationContent />
+      </main>
+    </>
   );
 }
 
