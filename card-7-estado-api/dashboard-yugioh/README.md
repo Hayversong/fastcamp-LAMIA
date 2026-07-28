@@ -1,32 +1,78 @@
-# React + TypeScript + Vite
+# Yu-Gi-Oh! Regulation Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Dashboard responsivo para consultar as listas atuais de cartas proibidas, limitadas e semilimitadas do Master Duel, TCG e OCG.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Next.js App Router, React e TypeScript strict;
+- Tailwind CSS e componentes shadcn/ui;
+- Axios para o cliente HTTP;
+- TanStack Query para cache e estado de servidor;
+- Zustand para o usuário global mockado;
+- Zod para validar respostas externas e internas;
+- Vitest, jsdom e Testing Library para testes.
 
-## React Compiler
+## Como executar
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+A aplicação fica disponível em `http://localhost:3000`.
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run start
+npm run lint
+npm run typecheck
+npm run test
+npm run test:watch
+npm run test:coverage
+```
+
+## Arquitetura
+
+```text
+app/
+  api/regulations/route.ts  # proxy, cache e normalização da API externa
+  layout.tsx                # providers e estrutura global
+  page.tsx                  # página fina
+components/
+  ui/                       # componentes shadcn/ui
+features/
+  auth/                     # store Zustand do usuário
+  regulations/
+    components/             # composição visual do domínio
+    hooks/                  # query, filtros, paginação e orquestração
+    services/               # chamada Axios à API interna
+    schemas.ts              # schemas Zod
+    types.ts                # tipos inferidos
+lib/                        # helpers compartilhados
+services/                   # cliente Axios
+tests/                      # schemas, hooks e formatadores
+types/                      # reexports públicos
+```
+
+## Fluxo de dados
+
+```text
+UI → hook TanStack Query → service Axios → /api/regulations
+   → API pública → validação Zod → resposta normalizada → cache → UI
+```
+
+A aplicação não expõe secrets. A URL pública externa permanece no route handler do servidor, que valida a modalidade, trata falhas externas e normaliza a resposta antes de entregá-la ao cliente.
+
+## Decisões de escopo
+
+- Não há formulário, portanto React Hook Form não foi adicionado.
+- A busca é exata por ID, então Fuse.js não agregaria valor.
+- React Query atende ao compartilhamento atual dos dados; um Context adicional duplicaria estado.
+- As cartas não possuem imagens nessa API, portanto `next/image` e placeholder não são necessários.
+
+## Fonte de dados
+
+[YAML Yugi Limit Regulation](https://github.com/DawnbrandBots/yaml-yugi-limit-regulation)
