@@ -14,6 +14,5 @@ export function useRegulationsQuery(gameMode: GameMode) {
   return useQuery({
     queryKey: regulationKeys.current(gameMode),
     queryFn: () => getCurrentRegulation(gameMode),
-    staleTime: 30 * 60 * 1000,
   });
 }

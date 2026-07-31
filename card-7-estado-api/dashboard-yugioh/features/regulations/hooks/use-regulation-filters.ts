@@ -13,7 +13,9 @@ export function useRegulationFilters(cards: RegulationCard[]) {
     const normalizedSearch = search.trim().toLowerCase();
 
     return cards.filter((card) => {
-      const matchesSearch = card.cardId.toLowerCase().includes(normalizedSearch);
+      const matchesSearch = card.cardId
+        .toLowerCase()
+        .includes(normalizedSearch);
       const matchesStatus = status === "all" || String(card.limit) === status;
       return matchesSearch && matchesStatus;
     });

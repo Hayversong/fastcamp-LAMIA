@@ -5,6 +5,7 @@ import {
 } from "@/features/regulations/schemas";
 
 const API_BASE_URL =
+  process.env.YUGIOH_API_BASE_URL ??
   "https://dawnbrandbots.github.io/yaml-yugi-limit-regulation";
 
 export async function GET(request: NextRequest): Promise<Response> {

@@ -1,11 +1,19 @@
 "use client";
 
-import { ShieldCheck } from "lucide-react";
+import { LogIn, LogOut, ShieldCheck } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/features/auth/store/user-store";
+
+const mockUser = {
+  name: "Haytham",
+  email: "haytham@example.com",
+};
 
 export function Header() {
   const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+  const logout = useUserStore((state) => state.logout);
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur-xl">
@@ -16,22 +24,39 @@ export function Header() {
           </div>
           <div>
             <p className="font-semibold text-foreground">Yu-Gi-Oh! Dashboard</p>
-            <p className="hidden text-xs text-muted-foreground sm:block">Forbidden & Limited Lists</p>
+            <p className="hidden text-xs text-muted-foreground sm:block">
+              Lista de proibidas e limitadas
+            </p>
           </div>
         </div>
 
         {user ? (
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <div className="hidden text-right sm:block">
               <p className="text-sm font-medium">Olá, {user.name}</p>
               <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
             <Avatar>
-              <AvatarFallback>{user.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+              <AvatarFallback>
+                {user.name.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Sair"
+              title="Sair"
+              onClick={logout}
+            >
+              <LogOut className="h-4 w-4" aria-hidden="true" />
+            </Button>
           </div>
         ) : (
-          <span className="text-sm text-muted-foreground">Usuário não conectado</span>
+          <Button variant="outline" onClick={() => setUser(mockUser)}>
+            <LogIn className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">Entrar como Haytham</span>
+            <span className="sm:hidden">Entrar</span>
+          </Button>
         )}
       </div>
     </header>

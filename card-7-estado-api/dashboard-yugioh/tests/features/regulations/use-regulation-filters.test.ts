@@ -15,7 +15,9 @@ describe("useRegulationFilters", () => {
 
     act(() => result.current.setSearch("4095"));
 
-    expect(result.current.filteredCards).toEqual([{ cardId: "4095", limit: 0 }]);
+    expect(result.current.filteredCards).toEqual([
+      { cardId: "4095", limit: 0 },
+    ]);
   });
 
   it("filtra por status", () => {
@@ -23,6 +25,8 @@ describe("useRegulationFilters", () => {
 
     act(() => result.current.setStatus("2"));
 
-    expect(result.current.filteredCards).toEqual([{ cardId: "6075", limit: 2 }]);
+    expect(result.current.filteredCards).toEqual([
+      { cardId: "6075", limit: 2 },
+    ]);
   });
 });

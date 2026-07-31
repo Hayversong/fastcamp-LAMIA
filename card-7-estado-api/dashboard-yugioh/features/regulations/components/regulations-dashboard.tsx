@@ -1,9 +1,27 @@
 "use client";
 
-import { CalendarDays, Database, Layers3, RefreshCw, ShieldAlert } from "lucide-react";
+import {
+  CalendarDays,
+  Database,
+  Layers3,
+  RefreshCw,
+  ShieldAlert,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { LoadingState } from "@/components/loading-state";
 import { formatDate } from "@/lib/format";
 import { GAME_MODE_LABELS } from "../constants";
@@ -25,14 +43,22 @@ export function RegulationsDashboard() {
             Regulamentação Yu-Gi-Oh!
           </h1>
           <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Consulte as restrições atuais das principais modalidades e encontre cartas por ID.
+            Consulte as restrições atuais das principais modalidades e encontre
+            cartas por ID.
           </p>
         </div>
 
         <label className="space-y-2">
-          <span className="text-sm font-medium text-muted-foreground">Modalidade</span>
-          <Select value={gameMode} onValueChange={(value) => setGameMode(value as GameMode)}>
-            <SelectTrigger className="h-11" aria-label="Selecionar modalidade"><SelectValue /></SelectTrigger>
+          <span className="text-sm font-medium text-muted-foreground">
+            Modalidade
+          </span>
+          <Select
+            value={gameMode}
+            onValueChange={(value) => setGameMode(value as GameMode)}
+          >
+            <SelectTrigger className="h-11" aria-label="Selecionar modalidade">
+              <SelectValue />
+            </SelectTrigger>
             <SelectContent>
               <SelectItem value="master-duel">Master Duel</SelectItem>
               <SelectItem value="tcg">TCG</SelectItem>
@@ -51,8 +77,12 @@ export function RegulationsDashboard() {
               <ShieldAlert className="h-6 w-6" aria-hidden="true" />
             </div>
             <div className="flex-1">
-              <p className="font-semibold">Não foi possível carregar a regulamentação</p>
-              <p className="mt-1 text-sm text-muted-foreground">{query.error.message}</p>
+              <p className="font-semibold">
+                Não foi possível carregar a regulamentação
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {query.error.message}
+              </p>
             </div>
             <Button onClick={() => query.refetch()}>
               <RefreshCw className="h-4 w-4" /> Tentar novamente
@@ -63,10 +93,28 @@ export function RegulationsDashboard() {
 
       {query.data ? (
         <div className="space-y-6">
-          <section className="grid gap-4 md:grid-cols-3" aria-label="Resumo da regulamentação">
-            <MetricCard icon={Layers3} label="Modalidade" value={GAME_MODE_LABELS[gameMode]} description="Lista competitiva selecionada" />
-            <MetricCard icon={CalendarDays} label="Em vigor desde" value={formatDate(query.data.date)} description="Data efetiva da regulamentação" />
-            <MetricCard icon={Database} label="Cartas regulamentadas" value={String(query.data.cards.length)} description="Total de IDs com restrição" />
+          <section
+            className="grid gap-4 md:grid-cols-3"
+            aria-label="Resumo da regulamentação"
+          >
+            <MetricCard
+              icon={Layers3}
+              label="Modalidade"
+              value={GAME_MODE_LABELS[gameMode]}
+              description="Lista competitiva selecionada"
+            />
+            <MetricCard
+              icon={CalendarDays}
+              label="Em vigor desde"
+              value={formatDate(query.data.date)}
+              description="Data efetiva da regulamentação"
+            />
+            <MetricCard
+              icon={Database}
+              label="Cartas regulamentadas"
+              value={String(query.data.cards.length)}
+              description="Total de IDs com restrição"
+            />
           </section>
 
           <RegulationTable
@@ -95,11 +143,18 @@ interface MetricCardProps {
   description: string;
 }
 
-function MetricCard({ icon: Icon, label, value, description }: MetricCardProps) {
+function MetricCard({
+  icon: Icon,
+  label,
+  value,
+  description,
+}: MetricCardProps) {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+        <CardTitle className="text-sm font-medium text-muted-foreground">
+          {label}
+        </CardTitle>
         <Icon className="h-4 w-4 text-primary" aria-hidden="true" />
       </CardHeader>
       <CardContent>
