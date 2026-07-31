@@ -3,12 +3,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function LoadingState() {
   return (
-    <div className="space-y-6" role="status" aria-label="Carregando regulamentações">
+    <div
+      className="space-y-6"
+      role="status"
+      aria-label="Carregando regulamentações"
+    >
       <div className="grid gap-4 md:grid-cols-3">
         {Array.from({ length: 3 }).map((_, index) => (
           <Card key={index}>
-            <CardHeader><Skeleton className="h-4 w-28" /></CardHeader>
-            <CardContent><Skeleton className="h-8 w-36" /></CardContent>
+            <CardHeader>
+              <Skeleton className="h-4 w-28" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-36" />
+            </CardContent>
           </Card>
         ))}
       </div>

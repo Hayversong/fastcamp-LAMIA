@@ -3,13 +3,32 @@
 import { ChevronLeft, ChevronRight, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { EmptyState } from "@/components/empty-state";
 import { cn } from "@/lib/utils";
-import { LIMIT_LABELS } from "../constants";
+import { getLimitLabel } from "../constants";
 import type { RegulationCard, RegulationLimit, StatusFilter } from "../types";
 
 interface RegulationTableProps {
@@ -57,9 +76,14 @@ export function RegulationTable({
 
         <div className="grid gap-3 sm:grid-cols-[minmax(220px,1fr)_180px]">
           <label className="space-y-1.5">
-            <span className="text-xs font-medium text-muted-foreground">Pesquisar por ID</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              Pesquisar por ID
+            </span>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+              <Search
+                className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+                aria-hidden="true"
+              />
               <Input
                 type="search"
                 value={search}
@@ -71,9 +95,16 @@ export function RegulationTable({
           </label>
 
           <label className="space-y-1.5">
-            <span className="text-xs font-medium text-muted-foreground">Status</span>
-            <Select value={status} onValueChange={(value) => onStatusChange(value as StatusFilter)}>
-              <SelectTrigger aria-label="Filtrar por status"><SelectValue /></SelectTrigger>
+            <span className="text-xs font-medium text-muted-foreground">
+              Status
+            </span>
+            <Select
+              value={status}
+              onValueChange={(value) => onStatusChange(value as StatusFilter)}
+            >
+              <SelectTrigger aria-label="Filtrar por status">
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todos</SelectItem>
                 <SelectItem value="0">Proibidas</SelectItem>
@@ -86,7 +117,9 @@ export function RegulationTable({
       </CardHeader>
 
       {resultCount === 0 ? (
-        <CardContent className="p-6"><EmptyState /></CardContent>
+        <CardContent className="p-6">
+          <EmptyState />
+        </CardContent>
       ) : (
         <>
           <Table>
@@ -100,13 +133,20 @@ export function RegulationTable({
             <TableBody>
               {cards.map((card) => (
                 <TableRow key={card.cardId}>
-                  <TableCell className="font-mono font-medium">#{card.cardId}</TableCell>
+                  <TableCell className="font-mono font-medium">
+                    #{card.cardId}
+                  </TableCell>
                   <TableCell>
-                    <Badge variant="outline" className={cn(statusClasses[card.limit])}>
-                      {LIMIT_LABELS[card.limit]}
+                    <Badge
+                      variant="outline"
+                      className={cn(statusClasses[card.limit])}
+                    >
+                      {getLimitLabel(card.limit)}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-right font-semibold">{card.limit}</TableCell>
+                  <TableCell className="text-right font-semibold">
+                    {card.limit}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -118,10 +158,20 @@ export function RegulationTable({
               <strong className="text-foreground">{totalPages}</strong>
             </p>
             <div className="flex w-full gap-2 sm:w-auto">
-              <Button variant="outline" className="flex-1 sm:flex-none" disabled={page === 1} onClick={onPreviousPage}>
+              <Button
+                variant="outline"
+                className="flex-1 sm:flex-none"
+                disabled={page === 1}
+                onClick={onPreviousPage}
+              >
                 <ChevronLeft className="h-4 w-4" /> Anterior
               </Button>
-              <Button variant="outline" className="flex-1 sm:flex-none" disabled={page === totalPages} onClick={onNextPage}>
+              <Button
+                variant="outline"
+                className="flex-1 sm:flex-none"
+                disabled={page === totalPages}
+                onClick={onNextPage}
+              >
                 Próxima <ChevronRight className="h-4 w-4" />
               </Button>
             </div>

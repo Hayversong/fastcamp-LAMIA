@@ -28,6 +28,7 @@ npm run dev
 npm run build
 npm run start
 npm run lint
+npm run format:check
 npm run typecheck
 npm run test
 npm run test:watch
@@ -76,3 +77,14 @@ A aplicação não expõe secrets. A URL pública externa permanece no route han
 ## Fonte de dados
 
 [YAML Yugi Limit Regulation](https://github.com/DawnbrandBots/yaml-yugi-limit-regulation)
+
+## Variáveis de ambiente
+
+Copie `.env.example` para `.env.local` quando precisar alterar as URLs padrão.
+A URL externa fica disponível apenas no Route Handler; o navegador consome a
+rota interna configurada em `NEXT_PUBLIC_API_BASE_URL`.
+
+O cliente Axios também possui um interceptor de request que adiciona
+`Authorization: Bearer <token>` quando existe uma chave `token` no
+`localStorage`. A API pública não exige autenticação, mas o interceptor demonstra
+o padrão solicitado pelo card.

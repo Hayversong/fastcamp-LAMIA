@@ -27,6 +27,13 @@ describe("regulation schemas", () => {
 
   it("rejeita limites fora de 0, 1 e 2", () => {
     expect(
+      ExternalRegulationSchema.safeParse({
+        date: "2026-07-01",
+        regulation: { "4023": 3 },
+      }).success,
+    ).toBe(false);
+
+    expect(
       RegulationDataSchema.safeParse({
         date: "2026-07-01",
         cards: [{ cardId: "4023", limit: 3 }],
