@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 225 28% 7%;
+  --foreground: 220 20% 96%;
+  --card: 225 24% 10%;
+  --card-foreground: 220 20% 96%;
+  --popover: 225 24% 10%;
+  --popover-foreground: 220 20% 96%;
+  --primary: 252 83% 70%;
+  --primary-foreground: 225 28% 7%;
+  --secondary: 224 20% 16%;
+  --secondary-foreground: 220 20% 96%;
+  --muted: 224 20% 16%;
+  --muted-foreground: 220 10% 64%;
+  --accent: 252 45% 20%;
+  --accent-foreground: 250 100% 88%;
+  --destructive: 0 72% 55%;
+  --border: 224 18% 19%;
+  --input: 224 18% 22%;
+  --ring: 252 83% 70%;
+  --radius: 0.75rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  color: hsl(var(--foreground));
+  background:
+    radial-gradient(
+      circle at 15% 0%,
+      hsl(252 70% 35% / 0.16),
+      transparent 34rem
+    ),
+    hsl(var(--background));
+  font-family: Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
