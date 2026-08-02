@@ -13,16 +13,7 @@ export const LIMIT_LABELS: Record<RegulationLimit, string> = {
 };
 
 export function getLimitLabel(limit: number): string {
-  switch (limit) {
-    case 0:
-      return LIMIT_LABELS[0];
-    case 1:
-      return LIMIT_LABELS[1];
-    case 2:
-      return LIMIT_LABELS[2];
-    default:
-      return "Status desconhecido";
-  }
+  return LIMIT_LABELS[limit as RegulationLimit] ?? "Status desconhecido";
 }
 
 export const CARDS_PER_PAGE = 20;

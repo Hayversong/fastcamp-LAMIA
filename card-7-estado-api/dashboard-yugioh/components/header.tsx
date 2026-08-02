@@ -5,14 +5,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/features/auth/store/user-store";
 
-const mockUser = {
-  name: "Haytham",
-  email: "haytham@example.com",
-};
-
 export function Header() {
   const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
+  const login = useUserStore((state) => state.login);
   const logout = useUserStore((state) => state.logout);
 
   return (
@@ -52,7 +47,7 @@ export function Header() {
             </Button>
           </div>
         ) : (
-          <Button variant="outline" onClick={() => setUser(mockUser)}>
+          <Button variant="outline" onClick={login}>
             <LogIn className="h-4 w-4" aria-hidden="true" />
             <span className="hidden sm:inline">Entrar como Haytham</span>
             <span className="sm:hidden">Entrar</span>
