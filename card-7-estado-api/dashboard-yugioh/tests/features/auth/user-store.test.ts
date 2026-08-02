@@ -23,4 +23,11 @@ describe("useUserStore", () => {
 
     expect(useUserStore.getState().user).toEqual(mockUser);
   });
+
+  it("restaura o usuario simulado ao fazer login", () => {
+    useUserStore.getState().logout();
+    useUserStore.getState().login();
+
+    expect(useUserStore.getState().user).toEqual(mockUser);
+  });
 });
