@@ -10,7 +10,11 @@ from api.games.schemas.game_schema import (
     JogoResposta,
     ListaJogosResposta,
 )
-from api.games.services.game_service import JogoDuplicadoErro, JogoNaoEncontradoErro, ServicoJogos
+from api.games.services.game_service import (
+    JogoDuplicadoErro,
+    JogoNaoEncontradoErro,
+    ServicoJogos,
+)
 
 router = APIRouter(prefix="/api/v1/games", tags=["Jogos"])
 _repositorio = RepositorioJogos()
@@ -28,14 +32,27 @@ def reiniciar_repositorio_jogos() -> None:
 
 def _converter_erro_http(erro: Exception) -> None:
     if isinstance(erro, JogoNaoEncontradoErro):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Jogo não encontrado") from erro
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Jogo não encontrado",
+        ) from erro
     if isinstance(erro, JogoDuplicadoErro):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(erro)) from erro
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=str(erro),
+        ) from erro
     raise erro
 
 
-@router.post("/", response_model=JogoResposta, status_code=status.HTTP_201_CREATED)
-def criar_jogo(dados: JogoCriacao, servico: ServicoJogos = Depends(obter_servico_jogos)) -> JogoResposta:
+@router.post(
+    "/",
+    response_model=JogoResposta,
+    status_code=status.HTTP_201_CREATED,
+)
+def criar_jogo(
+    dados: JogoCriacao,
+    servico: ServicoJogos = Depends(obter_servico_jogos),
+) -> JogoResposta:
     try:
         return servico.criar(dados)
     except JogoDuplicadoErro as erro:
@@ -53,12 +70,17 @@ def listar_jogos(
 
 
 @router.get("/stats/summary", response_model=EstatisticasJogosResposta)
-def obter_resumo(servico: ServicoJogos = Depends(obter_servico_jogos)) -> EstatisticasJogosResposta:
+def obter_resumo(
+    servico: ServicoJogos = Depends(obter_servico_jogos),
+) -> EstatisticasJogosResposta:
     return EstatisticasJogosResposta(**servico.resumo())
 
 
 @router.get("/{jogo_id}", response_model=JogoResposta)
-def buscar_jogo(jogo_id: int, servico: ServicoJogos = Depends(obter_servico_jogos)) -> JogoResposta:
+def buscar_jogo(
+    jogo_id: int,
+    servico: ServicoJogos = Depends(obter_servico_jogos),
+) -> JogoResposta:
     try:
         return servico.buscar_por_id(jogo_id)
     except JogoNaoEncontradoErro as erro:
@@ -67,7 +89,9 @@ def buscar_jogo(jogo_id: int, servico: ServicoJogos = Depends(obter_servico_jogo
 
 @router.put("/{jogo_id}", response_model=JogoResposta)
 def atualizar_jogo(
-    jogo_id: int, dados: JogoAtualizacao, servico: ServicoJogos = Depends(obter_servico_jogos)
+    jogo_id: int,
+    dados: JogoAtualizacao,
+    servico: ServicoJogos = Depends(obter_servico_jogos),
 ) -> JogoResposta:
     try:
         return servico.atualizar(jogo_id, dados)
@@ -77,7 +101,9 @@ def atualizar_jogo(
 
 @router.patch("/{jogo_id}/progress", response_model=JogoResposta)
 def atualizar_progresso_jogo(
-    jogo_id: int, dados: JogoAtualizacaoProgresso, servico: ServicoJogos = Depends(obter_servico_jogos)
+    jogo_id: int,
+    dados: JogoAtualizacaoProgresso,
+    servico: ServicoJogos = Depends(obter_servico_jogos),
 ) -> JogoResposta:
     try:
         return servico.atualizar_progresso(jogo_id, dados)
@@ -86,7 +112,10 @@ def atualizar_progresso_jogo(
 
 
 @router.delete("/{jogo_id}", status_code=status.HTTP_204_NO_CONTENT)
-def remover_jogo(jogo_id: int, servico: ServicoJogos = Depends(obter_servico_jogos)) -> Response:
+def remover_jogo(
+    jogo_id: int,
+    servico: ServicoJogos = Depends(obter_servico_jogos),
+) -> Response:
     try:
         servico.remover(jogo_id)
     except JogoNaoEncontradoErro as erro:

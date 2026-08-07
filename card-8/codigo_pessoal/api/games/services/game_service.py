@@ -1,6 +1,10 @@
 from api.games.models.game_model import Jogo, StatusJogo
 from api.games.repositories.game_repository import RepositorioJogos
-from api.games.schemas.game_schema import JogoAtualizacao, JogoAtualizacaoProgresso, JogoCriacao
+from api.games.schemas.game_schema import (
+    JogoAtualizacao,
+    JogoAtualizacaoProgresso,
+    JogoCriacao,
+)
 
 
 class JogoNaoEncontradoErro(Exception):
@@ -20,13 +24,21 @@ class ServicoJogos:
         jogo = Jogo(id=self._repositorio.proximo_id(), **dados.model_dump())
         return self._repositorio.criar(jogo)
 
-    def listar(self, status: StatusJogo | None = None, plataforma: str | None = None) -> list[Jogo]:
+    def listar(
+        self,
+        status: StatusJogo | None = None,
+        plataforma: str | None = None,
+    ) -> list[Jogo]:
         jogos = self._repositorio.listar()
         if status is not None:
             jogos = [jogo for jogo in jogos if jogo.status == status]
         if plataforma is not None:
             plataforma_normalizada = plataforma.strip().casefold()
-            jogos = [jogo for jogo in jogos if jogo.plataforma.casefold() == plataforma_normalizada]
+            jogos = [
+                jogo
+                for jogo in jogos
+                if jogo.plataforma.casefold() == plataforma_normalizada
+            ]
         return jogos
 
     def buscar_por_id(self, jogo_id: int) -> Jogo:
@@ -34,11 +46,19 @@ class ServicoJogos:
 
     def atualizar(self, jogo_id: int, dados: JogoAtualizacao) -> Jogo:
         jogo = self._buscar_existente(jogo_id)
-        self._garantir_unicidade(dados.titulo, dados.plataforma, id_jogo_ignorado=jogo.id)
+        self._garantir_unicidade(
+            dados.titulo,
+            dados.plataforma,
+            id_jogo_ignorado=jogo.id,
+        )
         jogo_atualizado = jogo.model_copy(update=dados.model_dump())
         return self._repositorio.atualizar(jogo_atualizado)
 
-    def atualizar_progresso(self, jogo_id: int, dados: JogoAtualizacaoProgresso) -> Jogo:
+    def atualizar_progresso(
+        self,
+        jogo_id: int,
+        dados: JogoAtualizacaoProgresso,
+    ) -> Jogo:
         jogo = self._buscar_existente(jogo_id)
         atualizacoes = dados.model_dump(exclude_unset=True)
         jogo_atualizado = jogo.model_copy(update=atualizacoes)
@@ -65,8 +85,18 @@ class ServicoJogos:
             raise JogoNaoEncontradoErro
         return jogo
 
-    def _garantir_unicidade(self, titulo: str, plataforma: str, id_jogo_ignorado: int | None = None) -> None:
+    def _garantir_unicidade(
+        self,
+        titulo: str,
+        plataforma: str,
+        id_jogo_ignorado: int | None = None,
+    ) -> None:
         for jogo in self._repositorio.listar():
-            e_mesmo_jogo = jogo.titulo.casefold() == titulo.casefold() and jogo.plataforma.casefold() == plataforma.casefold()
+            e_mesmo_jogo = (
+                jogo.titulo.casefold() == titulo.casefold()
+                and jogo.plataforma.casefold() == plataforma.casefold()
+            )
             if e_mesmo_jogo and jogo.id != id_jogo_ignorado:
-                raise JogoDuplicadoErro("Já existe um jogo com este título e plataforma")
+                raise JogoDuplicadoErro(
+                    "Já existe um jogo com este título e plataforma"
+                )
