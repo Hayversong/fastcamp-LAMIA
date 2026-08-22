@@ -2,6 +2,7 @@ import os
 from collections.abc import Generator
 
 import pytest
+from fastapi import status
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
@@ -43,3 +44,38 @@ def cliente(banco_isolado: None) -> Generator[TestClient, None, None]:
     app.dependency_overrides[get_db] = sobrescrever_db
     yield TestClient(app)
     app.dependency_overrides.clear()
+
+
+@pytest.fixture
+def usuario(cliente: TestClient) -> dict[str, object]:
+    senha = 'senhateste'
+    resposta = cliente.post(
+        '/auth/register',
+        json={
+            'username': 'testuser',
+            'email': 'test@example.com',
+            'senha': senha,
+        },
+    )
+    assert resposta.status_code == status.HTTP_201_CREATED
+    dados = resposta.json()
+    dados['senha_limpa'] = senha
+    return dados
+
+
+@pytest.fixture
+def token(cliente: TestClient, usuario: dict[str, object]) -> str:
+    resposta = cliente.post(
+        '/auth/token',
+        data={
+            'username': str(usuario['email']),
+            'password': str(usuario['senha_limpa']),
+        },
+    )
+    assert resposta.status_code == status.HTTP_200_OK
+    return resposta.json()['access_token']
+
+
+@pytest.fixture
+def headers_auth(token: str) -> dict[str, str]:
+    return {'Authorization': f'Bearer {token}'}

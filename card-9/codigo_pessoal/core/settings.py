@@ -8,6 +8,9 @@ class Settings(BaseSettings):
     )
 
     database_url: str = 'postgresql://admin:admin123@localhost:5432/fastcamp'
+    secret_key: str = 'development-only-change-before-production'
+    jwt_algorithm: str = 'HS256'
+    access_token_expire_minutes: int = 30
 
 
 settings = Settings()

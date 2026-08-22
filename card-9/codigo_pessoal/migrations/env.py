@@ -4,6 +4,7 @@ from alembic import context
 from sqlalchemy import create_engine, pool
 
 from api.games.models.game_model import JogoORM  # noqa: F401
+from api.users.models.user_model import UsuarioORM  # noqa: F401
 from core.database import Base
 from core.settings import settings
 

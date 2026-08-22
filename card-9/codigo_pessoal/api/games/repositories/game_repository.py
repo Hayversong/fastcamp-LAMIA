@@ -8,8 +8,8 @@ class RepositorioJogos:
     def __init__(self, db: Session) -> None:
         self._db = db
 
-    def criar(self, dados: JogoCriacao) -> JogoORM:
-        jogo = JogoORM(**dados.model_dump())
+    def criar(self, dados: JogoCriacao, user_id: int) -> JogoORM:
+        jogo = JogoORM(**dados.model_dump(), user_id=user_id)
         self._db.add(jogo)
         self._db.commit()
         self._db.refresh(jogo)
@@ -17,18 +17,24 @@ class RepositorioJogos:
 
     def listar(
         self,
+        user_id: int,
         status: StatusJogo | None = None,
         plataforma: str | None = None,
     ) -> list[JogoORM]:
-        query = self._db.query(JogoORM)
+        query = self._db.query(JogoORM).filter(JogoORM.user_id == user_id)
         if status is not None:
             query = query.filter(JogoORM.status == status)
         if plataforma is not None:
             query = query.filter(JogoORM.plataforma.ilike(plataforma.strip()))
         return query.all()
 
-    def buscar_por_id(self, jogo_id: int) -> JogoORM | None:
-        return self._db.query(JogoORM).filter(JogoORM.id == jogo_id).first()
+    def buscar_por_id(self, jogo_id: int, user_id: int) -> JogoORM | None:
+        return (
+            self._db
+            .query(JogoORM)
+            .filter(JogoORM.id == jogo_id, JogoORM.user_id == user_id)
+            .first()
+        )
 
     def atualizar(self, jogo: JogoORM, dados: dict[str, object]) -> JogoORM:
         for campo, valor in dados.items():
@@ -45,11 +51,13 @@ class RepositorioJogos:
         self,
         titulo: str,
         plataforma: str,
+        user_id: int,
         ignorar_id: int | None = None,
     ) -> JogoORM | None:
         query = self._db.query(JogoORM).filter(
             JogoORM.titulo.ilike(titulo.strip()),
             JogoORM.plataforma.ilike(plataforma.strip()),
+            JogoORM.user_id == user_id,
         )
         if ignorar_id is not None:
             query = query.filter(JogoORM.id != ignorar_id)
