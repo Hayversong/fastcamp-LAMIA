@@ -1,17 +1,45 @@
+import os
+from collections.abc import Generator
+
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
 
-from api.games.controllers.game_controller import reiniciar_repositorio_jogos
-from main import app
+SQLALCHEMY_TEST_URL = 'sqlite:///./test.db'
+os.environ['DATABASE_URL'] = SQLALCHEMY_TEST_URL
+
+from core.database import Base  # noqa: E402
+from core.deps import get_db  # noqa: E402
+from main import app  # noqa: E402
+
+engine_test = create_engine(
+    SQLALCHEMY_TEST_URL,
+    connect_args={'check_same_thread': False},
+)
+TestingSessionLocal = sessionmaker(
+    bind=engine_test,
+    autocommit=False,
+    autoflush=False,
+)
 
 
 @pytest.fixture(autouse=True)
-def reiniciar_repositorio() -> None:
-    reiniciar_repositorio_jogos()
+def banco_isolado() -> Generator[None, None, None]:
+    Base.metadata.create_all(bind=engine_test)
     yield
-    reiniciar_repositorio_jogos()
+    Base.metadata.drop_all(bind=engine_test)
 
 
 @pytest.fixture
-def cliente() -> TestClient:
-    return TestClient(app)
+def cliente(banco_isolado: None) -> Generator[TestClient, None, None]:
+    def sobrescrever_db() -> Generator[Session, None, None]:
+        db = TestingSessionLocal()
+        try:
+            yield db
+        finally:
+            db.close()
+
+    app.dependency_overrides[get_db] = sobrescrever_db
+    yield TestClient(app)
+    app.dependency_overrides.clear()

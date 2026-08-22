@@ -10,24 +10,24 @@ class JogoBase(BaseModel):
         ...,
         min_length=1,
         max_length=120,
-        examples=["The Witcher 3"],
+        examples=['The Witcher 3'],
     )
-    plataforma: str = Field(..., min_length=1, examples=["PC"])
-    genero: str = Field(..., min_length=1, examples=["RPG"])
+    plataforma: str = Field(..., min_length=1, examples=['PC'])
+    genero: str = Field(..., min_length=1, examples=['RPG'])
     status: StatusJogo = Field(
         default=StatusJogo.BACKLOG,
-        examples=["backlog"],
+        examples=['backlog'],
     )
     horas_jogadas: float = Field(default=0, ge=0, examples=[12.5])
     nota: float | None = Field(default=None, ge=0, le=10, examples=[9.5])
-    data_compra: date | None = Field(default=None, examples=["2026-01-15"])
+    data_compra: date | None = Field(default=None, examples=['2026-01-15'])
 
-    @field_validator("titulo", "plataforma", "genero")
+    @field_validator('titulo', 'plataforma', 'genero')
     @classmethod
     def rejeitar_texto_vazio(cls, valor: str) -> str:
         valor = valor.strip()
         if not valor:
-            raise ValueError("O campo não pode estar vazio")
+            raise ValueError('O campo não pode estar vazio')
         return valor
 
 
@@ -40,7 +40,7 @@ class JogoAtualizacao(JogoBase):
 
 
 class JogoAtualizacaoProgresso(BaseModel):
-    status: StatusJogo | None = Field(default=None, examples=["playing"])
+    status: StatusJogo | None = Field(default=None, examples=['playing'])
     horas_jogadas: float | None = Field(default=None, ge=0, examples=[24])
     nota: float | None = Field(default=None, ge=0, le=10, examples=[8])
 
