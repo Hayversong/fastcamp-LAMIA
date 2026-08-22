@@ -1,10 +1,14 @@
 from datetime import date
 from enum import Enum as PythonEnum
+from typing import TYPE_CHECKING
 
-from sqlalchemy import Date, Enum, Float, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Date, Enum, Float, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from core.database import Base, TimestampMixin
+
+if TYPE_CHECKING:
+    from api.users.models.user_model import UsuarioORM
 
 
 class StatusJogo(str, PythonEnum):
@@ -33,3 +37,12 @@ class JogoORM(Base, TimestampMixin):
     )
     nota: Mapped[float | None] = mapped_column(Float, nullable=True)
     data_compra: Mapped[date | None] = mapped_column(Date, nullable=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey('usuarios.id', ondelete='CASCADE'),
+        nullable=False,
+    )
+    dono: Mapped['UsuarioORM'] = relationship(
+        'UsuarioORM',
+        back_populates='jogos',
+    )
