@@ -1,26 +1,35 @@
 from datetime import date
-from enum import Enum
+from enum import Enum as PythonEnum
 
-from pydantic import BaseModel, ConfigDict
+from sqlalchemy import Date, Enum, Float, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
-
-class StatusJogo(str, Enum):
-    BACKLOG = "backlog"
-    PLAYING = "playing"
-    COMPLETED = "completed"
-    DROPPED = "dropped"
+from core.database import Base, TimestampMixin
 
 
-class Jogo(BaseModel):
-    """Entidade interna persistida pelo repositório."""
+class StatusJogo(str, PythonEnum):
+    BACKLOG = 'backlog'
+    PLAYING = 'playing'
+    COMPLETED = 'completed'
+    DROPPED = 'dropped'
 
-    model_config = ConfigDict(from_attributes=True)
 
-    id: int
-    titulo: str
-    plataforma: str
-    genero: str
-    status: StatusJogo
-    horas_jogadas: float
-    nota: float | None = None
-    data_compra: date | None = None
+class JogoORM(Base, TimestampMixin):
+    __tablename__ = 'jogos'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
+    titulo: Mapped[str] = mapped_column(String(120), nullable=False)
+    plataforma: Mapped[str] = mapped_column(String(60), nullable=False)
+    genero: Mapped[str] = mapped_column(String(60), nullable=False)
+    status: Mapped[StatusJogo] = mapped_column(
+        Enum(StatusJogo),
+        default=StatusJogo.BACKLOG,
+        nullable=False,
+    )
+    horas_jogadas: Mapped[float] = mapped_column(
+        Float,
+        default=0.0,
+        nullable=False,
+    )
+    nota: Mapped[float | None] = mapped_column(Float, nullable=True)
+    data_compra: Mapped[date | None] = mapped_column(Date, nullable=True)

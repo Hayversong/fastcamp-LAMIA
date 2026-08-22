@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
+from sqlalchemy.orm import Session
 
 from api.games.models.game_model import StatusJogo
 from api.games.repositories.game_repository import RepositorioJogos
@@ -15,26 +16,21 @@ from api.games.services.game_service import (
     JogoNaoEncontradoErro,
     ServicoJogos,
 )
+from core.deps import get_db
 
-router = APIRouter(prefix="/api/v1/games", tags=["Jogos"])
-_repositorio = RepositorioJogos()
+router = APIRouter(prefix='/api/v1/games', tags=['Jogos'])
 
 
-def obter_servico_jogos() -> ServicoJogos:
+def obter_servico_jogos(db: Session = Depends(get_db)) -> ServicoJogos:
     """Fábrica de injeção de dependência do serviço de jogos."""
-    return ServicoJogos(_repositorio)
-
-
-def reiniciar_repositorio_jogos() -> None:
-    """Limpa o repositório compartilhado para os testes."""
-    _repositorio.reiniciar()
+    return ServicoJogos(RepositorioJogos(db))
 
 
 def _converter_erro_http(erro: Exception) -> None:
     if isinstance(erro, JogoNaoEncontradoErro):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Jogo não encontrado",
+            detail='Jogo não encontrado',
         ) from erro
     if isinstance(erro, JogoDuplicadoErro):
         raise HTTPException(
@@ -45,7 +41,7 @@ def _converter_erro_http(erro: Exception) -> None:
 
 
 @router.post(
-    "/",
+    '/',
     response_model=JogoResposta,
     status_code=status.HTTP_201_CREATED,
 )
@@ -59,9 +55,9 @@ def criar_jogo(
         _converter_erro_http(erro)
 
 
-@router.get("/", response_model=ListaJogosResposta)
+@router.get('/', response_model=ListaJogosResposta)
 def listar_jogos(
-    filtro_status: StatusJogo | None = Query(default=None, alias="status"),
+    filtro_status: StatusJogo | None = Query(default=None, alias='status'),
     plataforma: str | None = Query(default=None),
     servico: ServicoJogos = Depends(obter_servico_jogos),
 ) -> ListaJogosResposta:
@@ -69,14 +65,14 @@ def listar_jogos(
     return ListaJogosResposta(itens=jogos, total=len(jogos))
 
 
-@router.get("/stats/summary", response_model=EstatisticasJogosResposta)
+@router.get('/stats/summary', response_model=EstatisticasJogosResposta)
 def obter_resumo(
     servico: ServicoJogos = Depends(obter_servico_jogos),
 ) -> EstatisticasJogosResposta:
     return EstatisticasJogosResposta(**servico.resumo())
 
 
-@router.get("/{jogo_id}", response_model=JogoResposta)
+@router.get('/{jogo_id}', response_model=JogoResposta)
 def buscar_jogo(
     jogo_id: int,
     servico: ServicoJogos = Depends(obter_servico_jogos),
@@ -87,7 +83,7 @@ def buscar_jogo(
         _converter_erro_http(erro)
 
 
-@router.put("/{jogo_id}", response_model=JogoResposta)
+@router.put('/{jogo_id}', response_model=JogoResposta)
 def atualizar_jogo(
     jogo_id: int,
     dados: JogoAtualizacao,
@@ -99,7 +95,7 @@ def atualizar_jogo(
         _converter_erro_http(erro)
 
 
-@router.patch("/{jogo_id}/progress", response_model=JogoResposta)
+@router.patch('/{jogo_id}/progress', response_model=JogoResposta)
 def atualizar_progresso_jogo(
     jogo_id: int,
     dados: JogoAtualizacaoProgresso,
@@ -111,7 +107,7 @@ def atualizar_progresso_jogo(
         _converter_erro_http(erro)
 
 
-@router.delete("/{jogo_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete('/{jogo_id}', status_code=status.HTTP_204_NO_CONTENT)
 def remover_jogo(
     jogo_id: int,
     servico: ServicoJogos = Depends(obter_servico_jogos),

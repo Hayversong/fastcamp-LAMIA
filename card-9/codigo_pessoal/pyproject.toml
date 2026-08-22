@@ -9,6 +9,10 @@ readme = "README.md"
 requires-python = ">=3.11,<4.0"
 dependencies = [
     "fastapi[standard]>=0.141.1,<0.142.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.13.0",
+    "psycopg2-binary>=2.9.0",
+    "pydantic-settings>=2.0.0",
 ]
 
 [tool.poetry]
@@ -34,6 +38,8 @@ lint = "ruff check"
 pre_format = "ruff check --fix"
 format = "ruff format"
 run = "fastapi dev main.py"
+migrate = "alembic upgrade head"
+revision = "alembic revision --autogenerate -m"
 pre_test = "task lint"
 test = "pytest -s -x --cov=api -vv"
 post_test = "coverage html"
