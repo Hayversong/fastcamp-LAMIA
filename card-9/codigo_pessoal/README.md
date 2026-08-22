@@ -1,8 +1,9 @@
 # GameShelf API
 
 API REST para organizar uma coleção pessoal de jogos. O projeto usa FastAPI,
-Pydantic e uma arquitetura em camadas: controllers tratam HTTP, services
-concentram regras de negócio e repositories encapsulam a lista em memória.
+Pydantic, SQLAlchemy, PostgreSQL e Alembic em uma arquitetura em camadas:
+controllers tratam HTTP, services concentram regras de negócio e repositories
+encapsulam a persistência no banco.
 
 ## Requisitos
 
@@ -11,10 +12,10 @@ concentram regras de negócio e repositories encapsulam a lista em memória.
 ## Instalação e execução
 
 ```bash
-python -m venv .venv
-.venv\\Scripts\\activate
-pip install -r requirements.txt
-uvicorn main:app --reload
+poetry install
+docker compose up -d
+poetry run alembic upgrade head
+poetry run fastapi dev main.py
 ```
 
 A API estará disponível em `http://127.0.0.1:8000`, a documentação Swagger em
@@ -23,11 +24,10 @@ A API estará disponível em `http://127.0.0.1:8000`, a documentação Swagger e
 ## Testes
 
 ```bash
-pytest
+poetry run pytest -s -x --cov=api -vv
 ```
 
-Cada teste reinicializa o repositório em memória por meio de uma fixture do
-pytest, garantindo isolamento total entre os cenários.
+Cada teste usa um banco SQLite isolado e não depende do PostgreSQL ou do Docker.
 
 ## Exemplos
 
