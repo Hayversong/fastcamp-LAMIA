@@ -1,41 +1,56 @@
-from api.games.models.game_model import Jogo
+from sqlalchemy.orm import Session
+
+from api.games.models.game_model import JogoORM, StatusJogo
+from api.games.schemas.game_schema import JogoCriacao
 
 
 class RepositorioJogos:
-    """Armazenamento de jogos em memória."""
+    def __init__(self, db: Session) -> None:
+        self._db = db
 
-    def __init__(self) -> None:
-        self._jogos: list[Jogo] = []
-        self._proximo_id = 1
-
-    def criar(self, jogo: Jogo) -> Jogo:
-        self._jogos.append(jogo)
-        self._proximo_id += 1
+    def criar(self, dados: JogoCriacao) -> JogoORM:
+        jogo = JogoORM(**dados.model_dump())
+        self._db.add(jogo)
+        self._db.commit()
+        self._db.refresh(jogo)
         return jogo
 
-    def proximo_id(self) -> int:
-        return self._proximo_id
+    def listar(
+        self,
+        status: StatusJogo | None = None,
+        plataforma: str | None = None,
+    ) -> list[JogoORM]:
+        query = self._db.query(JogoORM)
+        if status is not None:
+            query = query.filter(JogoORM.status == status)
+        if plataforma is not None:
+            query = query.filter(JogoORM.plataforma.ilike(plataforma.strip()))
+        return query.all()
 
-    def listar(self) -> list[Jogo]:
-        return list(self._jogos)
+    def buscar_por_id(self, jogo_id: int) -> JogoORM | None:
+        return self._db.query(JogoORM).filter(JogoORM.id == jogo_id).first()
 
-    def buscar_por_id(self, jogo_id: int) -> Jogo | None:
-        return next((jogo for jogo in self._jogos if jogo.id == jogo_id), None)
+    def atualizar(self, jogo: JogoORM, dados: dict[str, object]) -> JogoORM:
+        for campo, valor in dados.items():
+            setattr(jogo, campo, valor)
+        self._db.commit()
+        self._db.refresh(jogo)
+        return jogo
 
-    def atualizar(self, jogo: Jogo) -> Jogo:
-        for indice, jogo_armazenado in enumerate(self._jogos):
-            if jogo_armazenado.id == jogo.id:
-                self._jogos[indice] = jogo
-                return jogo
-        raise ValueError("Jogo não existe")
+    def remover(self, jogo: JogoORM) -> None:
+        self._db.delete(jogo)
+        self._db.commit()
 
-    def remover(self, jogo_id: int) -> bool:
-        for indice, jogo in enumerate(self._jogos):
-            if jogo.id == jogo_id:
-                del self._jogos[indice]
-                return True
-        return False
-
-    def reiniciar(self) -> None:
-        self._jogos.clear()
-        self._proximo_id = 1
+    def buscar_duplicado(
+        self,
+        titulo: str,
+        plataforma: str,
+        ignorar_id: int | None = None,
+    ) -> JogoORM | None:
+        query = self._db.query(JogoORM).filter(
+            JogoORM.titulo.ilike(titulo.strip()),
+            JogoORM.plataforma.ilike(plataforma.strip()),
+        )
+        if ignorar_id is not None:
+            query = query.filter(JogoORM.id != ignorar_id)
+        return query.first()
