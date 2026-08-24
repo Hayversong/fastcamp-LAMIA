@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from api.games.models.game_model import JogoORM, StatusJogo
@@ -25,7 +26,9 @@ class RepositorioJogos:
         if status is not None:
             query = query.filter(JogoORM.status == status)
         if plataforma is not None:
-            query = query.filter(JogoORM.plataforma.ilike(plataforma.strip()))
+            query = query.filter(
+                func.lower(JogoORM.plataforma) == plataforma.strip().lower()
+            )
         return query.all()
 
     def buscar_por_id(self, jogo_id: int, user_id: int) -> JogoORM | None:
@@ -55,8 +58,8 @@ class RepositorioJogos:
         ignorar_id: int | None = None,
     ) -> JogoORM | None:
         query = self._db.query(JogoORM).filter(
-            JogoORM.titulo.ilike(titulo.strip()),
-            JogoORM.plataforma.ilike(plataforma.strip()),
+            func.lower(JogoORM.titulo) == titulo.strip().lower(),
+            func.lower(JogoORM.plataforma) == plataforma.strip().lower(),
             JogoORM.user_id == user_id,
         )
         if ignorar_id is not None:
