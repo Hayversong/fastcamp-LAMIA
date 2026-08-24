@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from api.users.models.user_model import UsuarioORM
 from api.users.repositories.user_repository import RepositorioUsuarios
 from api.users.schemas.user_schema import (
     TokenResposta,
@@ -10,12 +9,13 @@ from api.users.schemas.user_schema import (
     UsuarioResposta,
 )
 from api.users.services.user_service import (
+    CredenciaisInvalidasErro,
     EmailJaExisteErro,
     ServicoUsuarios,
     UsernameJaExisteErro,
 )
 from core.deps import get_db
-from core.security import create_access_token, verify_password
+from core.security import create_access_token
 
 router = APIRouter(prefix='/auth', tags=['Autenticação'])
 
@@ -56,24 +56,19 @@ def registrar_usuario(
 @router.post('/token', response_model=TokenResposta)
 def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db),
+    servico: ServicoUsuarios = Depends(obter_servico_usuarios),
 ) -> TokenResposta:
-    usuario = (
-        db
-        .query(UsuarioORM)
-        .filter(UsuarioORM.email == form_data.username)
-        .first()
-    )
-
-    if usuario is None or not verify_password(
-        form_data.password,
-        usuario.senha,
-    ):
+    try:
+        usuario = servico.autenticar(
+            email=form_data.username,
+            senha=form_data.password,
+        )
+    except CredenciaisInvalidasErro as erro:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Email ou senha incorretos',
+            detail=str(erro),
             headers={'WWW-Authenticate': 'Bearer'},
-        )
+        ) from erro
 
     access_token = create_access_token(data={'sub': usuario.email})
     return TokenResposta(access_token=access_token)
