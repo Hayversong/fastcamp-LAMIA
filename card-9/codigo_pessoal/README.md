@@ -57,8 +57,9 @@ Instale as dependências:
 poetry install
 ```
 
-Opcionalmente, crie o arquivo `.env` a partir do exemplo. Sem ele, a aplicação
-usa a mesma URL PostgreSQL como valor padrão.
+Crie o arquivo `.env` a partir do exemplo e substitua o valor de `SECRET_KEY`
+por uma chave aleatória exclusiva do ambiente. O `.env` é ignorado pelo Git e
+nunca deve ser versionado.
 
 ```powershell
 Copy-Item .env.example .env
@@ -74,6 +75,7 @@ A configuração padrão é:
 
 ```env
 DATABASE_URL=postgresql://admin:admin123@localhost:5432/fastcamp
+SECRET_KEY=replace-with-a-secure-random-secret
 ```
 
 ## Banco de dados e migrations

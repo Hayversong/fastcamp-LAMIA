@@ -174,6 +174,43 @@ def test_rejeita_jogo_duplicado(
     assert resposta.status_code == status.HTTP_409_CONFLICT
 
 
+def test_duplicidade_trata_curingas_sql_como_texto_literal(
+    cliente: TestClient,
+    headers_auth: dict[str, str],
+) -> None:
+    criar_jogo(cliente, headers_auth, titulo='100% Orange Juice')
+
+    jogo = criar_jogo(
+        cliente,
+        headers_auth,
+        titulo='100X Orange Juice',
+    )
+
+    assert jogo['titulo'] == '100X Orange Juice'
+
+
+def test_filtro_plataforma_trata_curingas_sql_como_texto_literal(
+    cliente: TestClient,
+    headers_auth: dict[str, str],
+) -> None:
+    criar_jogo(cliente, headers_auth, plataforma='PC_')
+    criar_jogo(
+        cliente,
+        headers_auth,
+        titulo='Celeste',
+        plataforma='PC1',
+    )
+
+    resposta = cliente.get(
+        '/api/v1/games/?plataforma=pc_',
+        headers=headers_auth,
+    )
+
+    assert resposta.status_code == status.HTTP_200_OK
+    assert resposta.json()['total'] == 1
+    assert resposta.json()['itens'][0]['plataforma'] == 'PC_'
+
+
 def test_resumo(
     cliente: TestClient,
     headers_auth: dict[str, str],
