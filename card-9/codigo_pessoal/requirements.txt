@@ -1,0 +1,13 @@
+fastapi[standard]>=0.141.1,<0.142.0
+sqlalchemy>=2.0
+alembic>=1.13
+psycopg2-binary>=2.9
+pydantic-settings>=2.0
+pyjwt>=2.8.0
+pwdlib[argon2]>=0.2.0
+tzdata>=2025.2
+httpx>=0.28.1,<0.29.0
+pytest>=9.1.1,<10.0.0
+pytest-cov>=7.1.0,<8.0.0
+ruff>=0.16.1,<0.17.0
+taskipy>=1.14.1,<2.0.0
