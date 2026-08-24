@@ -46,6 +46,21 @@ def test_login_com_senha_errada(
         },
     )
     assert resposta.status_code == status.HTTP_401_UNAUTHORIZED
+    assert resposta.json() == {'detail': 'Email ou senha incorretos'}
+
+
+def test_login_com_email_inexistente_retorna_401(
+    cliente: TestClient,
+) -> None:
+    resposta = cliente.post(
+        '/auth/token',
+        data={
+            'username': 'inexistente@example.com',
+            'password': 'senha_qualquer',
+        },
+    )
+    assert resposta.status_code == status.HTTP_401_UNAUTHORIZED
+    assert resposta.json() == {'detail': 'Email ou senha incorretos'}
 
 
 def test_token_invalido_retorna_401(cliente: TestClient) -> None:

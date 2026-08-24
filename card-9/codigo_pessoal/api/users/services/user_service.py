@@ -1,6 +1,6 @@
 from api.users.models.user_model import UsuarioORM
 from api.users.repositories.user_repository import RepositorioUsuarios
-from core.security import get_password_hash
+from core.security import get_password_hash, verify_password
 
 
 class EmailJaExisteErro(Exception):
@@ -8,6 +8,10 @@ class EmailJaExisteErro(Exception):
 
 
 class UsernameJaExisteErro(Exception):
+    pass
+
+
+class CredenciaisInvalidasErro(Exception):
     pass
 
 
@@ -32,3 +36,9 @@ class ServicoUsuarios:
             email=email,
             senha_hash=senha_hash,
         )
+
+    def autenticar(self, email: str, senha: str) -> UsuarioORM:
+        usuario = self._repositorio.buscar_por_email(email)
+        if usuario is None or not verify_password(senha, usuario.senha):
+            raise CredenciaisInvalidasErro('Email ou senha incorretos')
+        return usuario
