@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini-chat em tempo real</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <main class="chat-card">
+      <header class="chat-header">
+        <div>
+          <p class="eyebrow">FastAPI + WebSocket</p>
+          <h1>Mini-chat em tempo real</h1>
+        </div>
+        <span id="status" class="status disconnected">Informe seu nome</span>
+      </header>
+
+      <section id="join-screen" class="join-screen">
+        <form id="join-form" class="join-form">
+          <div>
+            <p class="eyebrow">Antes de começar</p>
+            <h2>Como devemos chamar você?</h2>
+            <p class="join-description">
+              Digite seu nome para entrar e conversar em tempo real.
+            </p>
+          </div>
+
+          <label for="user">Seu nome</label>
+          <div class="join-fields">
+            <input
+              id="user"
+              maxlength="50"
+              autocomplete="nickname"
+              placeholder="Ex.: Hayverson"
+              required
+              autofocus
+            />
+            <button type="submit">Entrar no chat</button>
+          </div>
+          <small id="name-error" class="form-error" aria-live="polite"></small>
+        </form>
+      </section>
+
+      <section id="chat-interface" class="chat-interface" hidden>
+        <div class="identity" aria-label="Identificação">
+          <span>Conversando como <strong id="current-user"></strong></span>
+          <small id="client-id">Aguardando identificação do servidor…</small>
+        </div>
+
+        <ol id="messages" class="messages" aria-live="polite"></ol>
+
+        <form id="message-form" class="composer">
+          <label class="sr-only" for="message">Mensagem</label>
+          <input
+            id="message"
+            maxlength="2000"
+            autocomplete="off"
+            placeholder="Digite uma mensagem…"
+            disabled
+          />
+          <button type="submit" disabled>Enviar</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="/static/script.js" defer></script>
+  </body>
+</html>
