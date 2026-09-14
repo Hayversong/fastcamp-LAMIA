@@ -1,0 +1,4 @@
+{
+  "semantic_scholar": "O Semantic Scholar é uma plataforma de busca científica que oferece uma API REST com acesso a dados detalhados sobre artigos, autores, citações, conferências e muito mais. Seu Academic Graph inclui embeddings (SPECTER2), relações de citação e recomendações de artigos semelhantes. Ideal para quem busca explorar redes de conhecimento científico, analisar impacto acadêmico ou obter recomendações baseadas em similaridade.",
+  "arxiv": "O arXiv é um repositório gratuito e de acesso aberto com mais de 2,4 milhões de preprints em áreas como física, matemática, ciência da computação, estatística e economia. Os artigos publicados no arXiv ainda não passaram por revisão por pares, o que permite acesso rápido às pesquisas mais recentes. É uma fonte essencial para quem deseja acompanhar novidades acadêmicas em tempo real."
+}
