@@ -1,0 +1,292 @@
+Execução de cliente real em 2026-09-14T18:41:01.105278+00:00
+Fonte: arxiv
+JSON: {"session_id": "demo_1789411261", "response": "Os artigos apresentam temas relacionados a **medicina**, **diagnósticos de doenças infeccíveis**, **modelagem bayesiana**, **processos de previsão climática**, **self-correcting large language models**, e **query rewriting**.  \n\n- **Título 1**: \"Multimodal image registration for effective thermographic fever screening\" (link: [1]) – Tema: Diagnósticos de doenças infeccíveis.  \n- **Título 2**: \"Correcting Hallucinations in News Summaries\" (link: [2]) – Tema: Modelagem de linguagem.  \n- **Título 3**: \"SAGE: Strategy-Adaptive Generation Engine for Query Rewriting\" (link: [3]) – Tema: Modelagem de linguagem e query rewriting.  \n\nNenhum outro tema foi mencionado nos artigos consultados.", "usage": {"provider": "ollama", "model": "qwen3:0.6b", "input_tokens": 730, "output_tokens": 194, "total_tokens": 924, "llm_calls": 1, "counting_method": "provider"}, "sources": [{"file": "abstracts_arxiv.pdf", "page": 1, "excerpt": "Ttile: Multimodal image registration for effective thermographic fever screening\nLink: http://arxiv.org/abs/2507.02955v1\nAbstract: Fever screening based on infrared thermographs (IRTs) is a viable mass screening\napproach during infectious disease pandemics . IRTs have found to be powerful, quick and\nnon-invasive methods to detect elevated temperatures .\nTtile: Linking climate and dengue in the Philippines using a two-stage Bayesian\nspatio-temporal model\nLink: http://arxiv.org/abs/2506.22334v1\nAbstract: Dengue is an infectious disease which poses significant socioeconomic and disease\nburden in many tropical and subtropical regions of the world . We postulate a Bayesian\nspatio-temporal model and use the climate predictions from the first stage as inputs .\nTtile: (Fact) Check Your Bias\nLink: http://arxiv.org/abs/2506.21745v1\nAbstract: Automatic fact verification systems increasingly rely on large language models . We\ninvestigate how parametric knowledge biases affect fact-checking outcomes of the HerO system .\nLlama 3.1 labels nearly half the claims as \"Not Enough Evidence\"\nTtile: SAGE: Strategy-Adaptive Generation Engine for Query Rewriting\nLink: http://arxiv.org/abs/2506.19783v1"}, {"file": "abstracts_arxiv.pdf", "page": 2, "excerpt": "Ttile: Correcting Hallucinations in News Summaries: Exploration of Self-Correcting LLM\nMethods with External Knowledge\nLink: http://arxiv.org/abs/2506.19607v1\nAbstract: large language models (LLMs) have shown remarkable capabilities to generate coherent\ntext . They suffer from the issue of hallucinations -- factually inaccurate statements . The\nself-correcting methods are promising ."}, {"file": "abstracts_arxiv.pdf", "page": 1, "excerpt": "Ttile: SAGE: Strategy-Adaptive Generation Engine for Query Rewriting\nLink: http://arxiv.org/abs/2506.19783v1\nAbstract: Query rewriting is pivotal for enhancing dense retrieval, yet current methods require\nlarge-scale supervised data or suffer from inefficient reinforcement learning (RL) exploration .\nguiding Large Language Models (LLMs) with a concise set of expert-crafted strategies, such as\nsemantic expansion and entity disambiguation, substantially improves retrieval effectiveness on\nchallenging benchmarks, including HotpotQA, FEVER, NFCorpus ."}], "rag_used": true}
+[+0.797s] sources: {"sources": [{"file": "abstracts_arxiv.pdf", "page": 1, "excerpt": "Ttile: Multimodal image registration for effective thermographic fever screening\nLink: http://arxiv.org/abs/2507.02955v1\nAbstract: Fever screening based on infrared thermographs (IRTs) is a viable mass screening\napproach during infectious disease pandemics . IRTs have found to be powerful, quick and\nnon-invasive methods to detect elevated temperatures .\nTtile: Linking climate and dengue in the Philippines using a two-stage Bayesian\nspatio-temporal model\nLink: http://arxiv.org/abs/2506.22334v1\nAbstract: Dengue is an infectious disease which poses significant socioeconomic and disease\nburden in many tropical and subtropical regions of the world . We postulate a Bayesian\nspatio-temporal model and use the climate predictions from the first stage as inputs .\nTtile: (Fact) Check Your Bias\nLink: http://arxiv.org/abs/2506.21745v1\nAbstract: Automatic fact verification systems increasingly rely on large language models . We\ninvestigate how parametric knowledge biases affect fact-checking outcomes of the HerO system .\nLlama 3.1 labels nearly half the claims as \"Not Enough Evidence\"\nTtile: SAGE: Strategy-Adaptive Generation Engine for Query Rewriting\nLink: http://arxiv.org/abs/2506.19783v1"}, {"file": "abstracts_arxiv.pdf", "page": 2, "excerpt": "Ttile: Correcting Hallucinations in News Summaries: Exploration of Self-Correcting LLM\nMethods with External Knowledge\nLink: http://arxiv.org/abs/2506.19607v1\nAbstract: large language models (LLMs) have shown remarkable capabilities to generate coherent\ntext . They suffer from the issue of hallucinations -- factually inaccurate statements . The\nself-correcting methods are promising ."}, {"file": "abstracts_arxiv.pdf", "page": 1, "excerpt": "Ttile: SAGE: Strategy-Adaptive Generation Engine for Query Rewriting\nLink: http://arxiv.org/abs/2506.19783v1\nAbstract: Query rewriting is pivotal for enhancing dense retrieval, yet current methods require\nlarge-scale supervised data or suffer from inefficient reinforcement learning (RL) exploration .\nguiding Large Language Models (LLMs) with a concise set of expert-crafted strategies, such as\nsemantic expansion and entity disambiguation, substantially improves retrieval effectiveness on\nchallenging benchmarks, including HotpotQA, FEVER, NFCorpus ."}], "rag_used": true}
+[+0.891s] token: {"text": "Os"}
+[+0.953s] token: {"text": " art"}
+[+1.031s] token: {"text": "igos"}
+[+1.094s] token: {"text": " apresent"}
+[+1.156s] token: {"text": "am"}
+[+1.234s] token: {"text": " temas"}
+[+1.297s] token: {"text": " relacion"}
+[+1.359s] token: {"text": "ados"}
+[+1.438s] token: {"text": " a"}
+[+1.500s] token: {"text": " **"}
+[+1.578s] token: {"text": "reg"}
+[+1.641s] token: {"text": "istra"}
+[+1.703s] token: {"text": "ção"}
+[+1.781s] token: {"text": " de"}
+[+1.844s] token: {"text": " imag"}
+[+1.906s] token: {"text": "ens"}
+[+1.984s] token: {"text": " multim"}
+[+2.047s] token: {"text": "od"}
+[+2.141s] token: {"text": "ais"}
+[+2.141s] token: {"text": "**,"}
+[+2.141s] token: {"text": " **"}
+[+2.156s] token: {"text": "model"}
+[+2.156s] token: {"text": "agem"}
+[+2.172s] token: {"text": " bay"}
+[+2.172s] token: {"text": "es"}
+[+2.172s] token: {"text": "iana"}
+[+2.188s] token: {"text": "**,"}
+[+2.188s] token: {"text": " **"}
+[+2.203s] token: {"text": "ver"}
+[+2.203s] token: {"text": "ificação"}
+[+2.219s] token: {"text": " de"}
+[+2.219s] token: {"text": " f"}
+[+2.234s] token: {"text": "ato"}
+[+2.234s] token: {"text": "**"}
+[+2.250s] token: {"text": " e"}
+[+2.250s] token: {"text": " **"}
+[+2.266s] token: {"text": "re"}
+[+2.266s] token: {"text": "lev"}
+[+2.266s] token: {"text": "ância"}
+[+2.281s] token: {"text": " em"}
+[+2.281s] token: {"text": " busca"}
+[+2.297s] token: {"text": " de"}
+[+2.297s] token: {"text": " dados"}
+[+2.313s] token: {"text": "**"}
+[+2.313s] token: {"text": "."}
+[+2.313s] token: {"text": " A"}
+[+2.328s] token: {"text": " seguir"}
+[+2.328s] token: {"text": ","}
+[+2.328s] token: {"text": " cit"}
+[+2.344s] token: {"text": "am"}
+[+2.344s] token: {"text": "-se"}
+[+2.359s] token: {"text": " os"}
+[+2.359s] token: {"text": " t"}
+[+2.375s] token: {"text": "ít"}
+[+2.375s] token: {"text": "ulos"}
+[+2.406s] token: {"text": " e"}
+[+2.422s] token: {"text": " font"}
+[+2.469s] token: {"text": "es"}
+[+2.484s] token: {"text": " disponíveis"}
+[+2.516s] token: {"text": ":\n\n"}
+[+2.531s] token: {"text": "-"}
+[+2.547s] token: {"text": " **"}
+[+2.578s] token: {"text": "T"}
+[+2.609s] token: {"text": "ítulo"}
+[+2.641s] token: {"text": " "}
+[+2.656s] token: {"text": "1"}
+[+2.672s] token: {"text": "**:"}
+[+2.688s] token: {"text": " *"}
+[+2.719s] token: {"text": "Mult"}
+[+2.734s] token: {"text": "im"}
+[+2.750s] token: {"text": "odal"}
+[+2.781s] token: {"text": " image"}
+[+2.813s] token: {"text": " registration"}
+[+2.828s] token: {"text": " for"}
+[+2.844s] token: {"text": " effective"}
+[+2.875s] token: {"text": " therm"}
+[+2.891s] token: {"text": "ographic"}
+[+2.891s] token: {"text": " fever"}
+[+2.891s] token: {"text": " screening"}
+[+2.906s] token: {"text": "*"}
+[+2.906s] token: {"text": " ["}
+[+2.906s] token: {"text": "1"}
+[+2.922s] token: {"text": "]"}
+[+2.922s] token: {"text": " –"}
+[+2.938s] token: {"text": " Rel"}
+[+2.938s] token: {"text": "ação"}
+[+2.953s] token: {"text": " entre"}
+[+2.953s] token: {"text": " imag"}
+[+2.953s] token: {"text": "ens"}
+[+2.969s] token: {"text": " e"}
+[+2.969s] token: {"text": " reg"}
+[+2.984s] token: {"text": "ulação"}
+[+2.984s] token: {"text": " té"}
+[+2.984s] token: {"text": "rm"}
+[+3.000s] token: {"text": "ica"}
+[+3.000s] token: {"text": " para"}
+[+3.016s] token: {"text": " ident"}
+[+3.016s] token: {"text": "ificação"}
+[+3.016s] token: {"text": " de"}
+[+3.031s] token: {"text": " fe"}
+[+3.031s] token: {"text": "bre"}
+[+3.047s] token: {"text": ".\n"}
+[+3.047s] token: {"text": "-"}
+[+3.047s] token: {"text": " **"}
+[+3.063s] token: {"text": "T"}
+[+3.063s] token: {"text": "ítulo"}
+[+3.078s] token: {"text": " "}
+[+3.078s] token: {"text": "2"}
+[+3.078s] token: {"text": "**:"}
+[+3.094s] token: {"text": " *"}
+[+3.094s] token: {"text": "Link"}
+[+3.094s] token: {"text": "ing"}
+[+3.109s] token: {"text": " climate"}
+[+3.109s] token: {"text": " and"}
+[+3.125s] token: {"text": " d"}
+[+3.125s] token: {"text": "eng"}
+[+3.125s] token: {"text": "ue"}
+[+3.141s] token: {"text": " in"}
+[+3.141s] token: {"text": " the"}
+[+3.141s] token: {"text": " Philippines"}
+[+3.156s] token: {"text": " using"}
+[+3.156s] token: {"text": " a"}
+[+3.172s] token: {"text": " two"}
+[+3.172s] token: {"text": "-stage"}
+[+3.172s] token: {"text": " Bayesian"}
+[+3.188s] token: {"text": " sp"}
+[+3.188s] token: {"text": "atio"}
+[+3.188s] token: {"text": "-temp"}
+[+3.203s] token: {"text": "oral"}
+[+3.203s] token: {"text": " model"}
+[+3.203s] token: {"text": "*"}
+[+3.219s] token: {"text": " ["}
+[+3.219s] token: {"text": "1"}
+[+3.234s] token: {"text": "]"}
+[+3.234s] token: {"text": " –"}
+[+3.234s] token: {"text": " Model"}
+[+3.250s] token: {"text": "agem"}
+[+3.250s] token: {"text": " bay"}
+[+3.250s] token: {"text": "es"}
+[+3.266s] token: {"text": "iana"}
+[+3.266s] token: {"text": " para"}
+[+3.266s] token: {"text": " conex"}
+[+3.281s] token: {"text": "ão"}
+[+3.281s] token: {"text": " entre"}
+[+3.281s] token: {"text": " cl"}
+[+3.297s] token: {"text": "ima"}
+[+3.297s] token: {"text": " e"}
+[+3.313s] token: {"text": " d"}
+[+3.313s] token: {"text": "eng"}
+[+3.328s] token: {"text": "ue"}
+[+3.328s] token: {"text": ".\n"}
+[+3.328s] token: {"text": "-"}
+[+3.406s] token: {"text": " **"}
+[+3.484s] token: {"text": "T"}
+[+3.563s] token: {"text": "ítulo"}
+[+3.625s] token: {"text": " "}
+[+3.703s] token: {"text": "3"}
+[+3.766s] token: {"text": "**:"}
+[+3.844s] token: {"text": " *"}
+[+3.906s] token: {"text": "S"}
+[+3.984s] token: {"text": "AGE"}
+[+4.063s] token: {"text": ":"}
+[+4.125s] token: {"text": " Strategy"}
+[+4.203s] token: {"text": "-"}
+[+4.266s] token: {"text": "Ad"}
+[+4.344s] token: {"text": "aptive"}
+[+4.422s] token: {"text": " Generation"}
+[+4.484s] token: {"text": " Engine"}
+[+4.563s] token: {"text": " for"}
+[+4.625s] token: {"text": " Query"}
+[+4.703s] token: {"text": " Rew"}
+[+4.766s] token: {"text": "riting"}
+[+4.844s] token: {"text": "*"}
+[+4.922s] token: {"text": " ["}
+[+4.984s] token: {"text": "1"}
+[+5.063s] token: {"text": "]"}
+[+5.125s] token: {"text": " –"}
+[+5.203s] token: {"text": " Estr"}
+[+5.281s] token: {"text": "atég"}
+[+5.359s] token: {"text": "ias"}
+[+5.422s] token: {"text": " de"}
+[+5.500s] token: {"text": " g"}
+[+5.563s] token: {"text": "eração"}
+[+5.641s] token: {"text": " para"}
+[+5.703s] token: {"text": " melhor"}
+[+5.719s] token: {"text": "ar"}
+[+5.719s] token: {"text": " a"}
+[+5.734s] token: {"text": " relev"}
+[+5.734s] token: {"text": "ância"}
+[+5.734s] token: {"text": " em"}
+[+5.750s] token: {"text": " busca"}
+[+5.750s] token: {"text": " de"}
+[+5.766s] token: {"text": " dados"}
+[+5.766s] token: {"text": ".\n"}
+[+5.781s] token: {"text": "-"}
+[+5.781s] token: {"text": " **"}
+[+5.781s] token: {"text": "T"}
+[+5.797s] token: {"text": "ítulo"}
+[+5.813s] token: {"text": " "}
+[+5.813s] token: {"text": "4"}
+[+5.828s] token: {"text": "**:"}
+[+5.828s] token: {"text": " *"}
+[+5.828s] token: {"text": "Correct"}
+[+5.844s] token: {"text": "ing"}
+[+5.844s] token: {"text": " Hall"}
+[+5.859s] token: {"text": "uc"}
+[+5.859s] token: {"text": "inations"}
+[+5.859s] token: {"text": " in"}
+[+5.875s] token: {"text": " News"}
+[+5.875s] token: {"text": " Sum"}
+[+5.891s] token: {"text": "maries"}
+[+5.891s] token: {"text": ":"}
+[+5.891s] token: {"text": " Exploration"}
+[+5.906s] token: {"text": " of"}
+[+5.906s] token: {"text": " Self"}
+[+5.922s] token: {"text": "-C"}
+[+5.922s] token: {"text": "orrect"}
+[+5.922s] token: {"text": "ing"}
+[+5.938s] token: {"text": " L"}
+[+5.938s] token: {"text": "LM"}
+[+5.953s] token: {"text": " Methods"}
+[+5.953s] token: {"text": "*"}
+[+5.953s] token: {"text": " ["}
+[+5.969s] token: {"text": "2"}
+[+5.969s] token: {"text": "]"}
+[+5.984s] token: {"text": " –"}
+[+5.984s] token: {"text": " Aval"}
+[+6.000s] token: {"text": "iação"}
+[+6.031s] token: {"text": " do"}
+[+6.078s] token: {"text": " des"}
+[+6.078s] token: {"text": "em"}
+[+6.078s] token: {"text": "pen"}
+[+6.125s] token: {"text": "ho"}
+[+6.125s] token: {"text": " de"}
+[+6.141s] token: {"text": " modelos"}
+[+6.172s] token: {"text": " de"}
+[+6.188s] token: {"text": " lingu"}
+[+6.219s] token: {"text": "agem"}
+[+6.234s] token: {"text": " grande"}
+[+6.266s] token: {"text": " em"}
+[+6.313s] token: {"text": " context"}
+[+6.313s] token: {"text": "os"}
+[+6.344s] token: {"text": " de"}
+[+6.359s] token: {"text": " ver"}
+[+6.406s] token: {"text": "ificação"}
+[+6.422s] token: {"text": " de"}
+[+6.469s] token: {"text": " f"}
+[+6.516s] token: {"text": "ato"}
+[+6.594s] token: {"text": ".\n\n"}
+[+6.656s] token: {"text": "Est"}
+[+6.734s] token: {"text": "es"}
+[+6.813s] token: {"text": " art"}
+[+6.875s] token: {"text": "igos"}
+[+6.969s] token: {"text": " ab"}
+[+7.031s] token: {"text": "ord"}
+[+7.109s] token: {"text": "am"}
+[+7.172s] token: {"text": " temas"}
+[+7.250s] token: {"text": " como"}
+[+7.328s] token: {"text": " **"}
+[+7.391s] token: {"text": "reg"}
+[+7.469s] token: {"text": "istra"}
+[+7.547s] token: {"text": "ção"}
+[+7.609s] token: {"text": " de"}
+[+7.688s] token: {"text": " imag"}
+[+7.766s] token: {"text": "ens"}
+[+7.828s] token: {"text": ","}
+[+7.906s] token: {"text": " model"}
+[+7.969s] token: {"text": "agem"}
+[+8.047s] token: {"text": " bay"}
+[+8.125s] token: {"text": "es"}
+[+8.188s] token: {"text": "iano"}
+[+8.250s] token: {"text": ","}
+[+8.328s] token: {"text": " ver"}
+[+8.391s] token: {"text": "ificação"}
+[+8.391s] token: {"text": " de"}
+[+8.406s] token: {"text": " f"}
+[+8.406s] token: {"text": "ato"}
+[+8.406s] token: {"text": " e"}
+[+8.422s] token: {"text": " relev"}
+[+8.438s] token: {"text": "ância"}
+[+8.438s] token: {"text": " em"}
+[+8.453s] token: {"text": " busca"}
+[+8.453s] token: {"text": " de"}
+[+8.453s] token: {"text": " dados"}
+[+8.469s] token: {"text": "**"}
+[+8.484s] token: {"text": "."}
+[+8.531s] usage: {"provider": "ollama", "model": "qwen3:0.6b", "input_tokens": 730, "output_tokens": 287, "total_tokens": 1017, "llm_calls": 1, "counting_method": "provider"}
+[+8.531s] done: {"session_id": "demo_1789411261"}
