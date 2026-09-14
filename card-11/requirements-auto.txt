@@ -1,0 +1,7 @@
+# Complemento opcional para source=auto, preservando os modelos locais originais.
+-r requirements.txt
+arxiv==2.2.0
+fpdf==1.7.2
+sentence-transformers==5.0.0
+transformers==4.53.0
+torch==2.7.1

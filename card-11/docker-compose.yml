@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  inai:
+    build:
+      context: .
+    container_name: agente-pesquisa-cientifica
+    ports:
+      - "8110:8110"
+    env_file:
+      - .env
