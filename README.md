@@ -1,86 +1,35 @@
-# 🚀 Fastcamp LAMIA
+# Fastcamp LAMIA
 
-Este repositório contém os estudos, projetos e exercícios desenvolvidos durante o **curso Fastcamp**, com foco em aprendizado prático e construção de aplicações modernas.
+Atividades práticas do **Fastcamp de desenvolvimento web do LAMIA**. Cada pasta `card-*` é uma etapa do curso: `codigo_aula` traz o que foi feito em aula e `codigo_pessoal` (ou `codigo_atividade_pratica`) traz a minha entrega, com README próprio explicando como rodar.
 
-## 📚 Sobre o Curso
+## Destaques de frontend
 
-O **Fastcamp** é um curso intensivo voltado para o desenvolvimento de habilidades em programação, abordando conceitos essenciais e boas práticas utilizadas no mercado.
-Este repositório serve como um registro da evolução ao longo do curso, reunindo exemplos, testes e implementações realizadas durante as aulas.
+| Projeto | O que é | Stack |
+|---|---|---|
+| [**Yu-Gi-Oh! Regulation Dashboard**](card-7-estado-api/dashboard-yugioh) | Consulta as listas de cartas proibidas, limitadas e semilimitadas do Master Duel, TCG e OCG | Next.js, TypeScript, TanStack Query, Zustand, Zod, shadcn/ui |
+| [**Lamia Analytics Dashboard**](card-5/codigo_pessoal) | Dashboard responsivo com gráficos | Next.js, TypeScript, Tailwind CSS, Recharts |
+| [**Games Review**](card-4/codigo_atividade_pratica) | Registro e avaliação de jogos, com capas buscadas na API RAWG | Next.js, React, Tailwind CSS |
 
-## 🎯 Objetivo do Repositório
+## Todos os cards
 
-* Consolidar o conhecimento adquirido durante o curso
-* Servir como material de revisão futura
-* Documentar a evolução prática no desenvolvimento de software
-* Disponibilizar exemplos simples e funcionais
+| Card | Tema | Entrega | Stack |
+|---|---|---|---|
+| [3](card-3) | Fundamentos de TypeScript | Classes, funções, objetos e generics | TypeScript |
+| [4](card-4) | Frontend com React | Games Review e exercício de aula | React, Vite, Next.js, Tailwind CSS |
+| [5](card-5/codigo_pessoal) | Dashboard com Next.js | Lamia Analytics Dashboard | Next.js, shadcn/ui, Recharts |
+| [7](card-7-estado-api/dashboard-yugioh) | Estado e consumo de API | Yu-Gi-Oh! Regulation Dashboard | TanStack Query, Zustand, Zod, Axios |
+| [8](card-8/codigo_pessoal) | APIs REST | GameShelf API, em camadas e em memória | Python, FastAPI, Pydantic |
+| [9](card-9/codigo_pessoal) | Banco de dados e autenticação | GameShelf API com PostgreSQL, migrations e auth | FastAPI, SQLAlchemy, Alembic, PostgreSQL |
+| [10](card-10/codigo_pessoal) | Tempo real | Mini-chat com WebSockets nativos | FastAPI, WebSocket API |
+| [11](card-11) | IA aplicada | Assistente de pesquisa com RAG e streaming SSE | FastAPI, Ollama, Docker |
 
-## 🛠️ Tecnologias Utilizadas
+## Como rodar
 
-As tecnologias podem variar conforme os módulos do curso, incluindo:
-
-* JavaScript / TypeScript
-* React / Next.js
-* Node.js
-* APIs REST
-* Outras ferramentas modernas do ecossistema web
-
-## 📁 Estrutura do Projeto
-
-A estrutura do repositório está organizada de acordo com os conteúdos abordados no curso, podendo conter:
-
-```
-📦 fastcamp-LAMIA
- ┣ 📂 modulo-1
- ┣ 📂 modulo-2
- ┣ 📂 projetos
- ┗ 📄 README.md
-```
-
-> ⚠️ A estrutura pode evoluir conforme o progresso no curso.
-
-## ▶️ Como Executar
-
-1. Clone o repositório:
+Clone o repositório e entre na pasta do card que quer executar:
 
 ```bash
 git clone https://github.com/Hayversong/fastcamp-LAMIA.git
+cd fastcamp-LAMIA/card-7-estado-api/dashboard-yugioh
 ```
 
-2. Acesse a pasta do projeto:
-
-```bash
-cd fastcamp-LAMIA
-```
-
-3. Instale as dependências (se aplicável):
-
-```bash
-npm install
-```
-
-4. Execute o projeto:
-
-```bash
-npm run dev
-```
-
-> ℹ️ Alguns módulos podem ter instruções específicas.
-
-## 📌 Observações
-
-* Este repositório é voltado para fins educacionais.
-* O código pode conter experimentações e melhorias contínuas.
-* Nem todos os projetos estão finalizados.
-
-## 🤝 Contribuição
-
-Como este é um repositório de estudos, contribuições externas não são o foco principal.
-Mas sugestões e feedbacks são sempre bem-vindos!
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT.
-
----
-
-💡 *Este repositório faz parte da jornada de aprendizado no Fastcamp.*
+Os projetos de frontend usam Node.js (`npm install` e `npm run dev`). Os de backend usam Python (Poetry ou `pip install -r requirements.txt`). As instruções completas estão no README de cada card.
